@@ -563,6 +563,16 @@ class JobsManager(object):
         if not kwargs.has_key('campaign'):
             print >> sys.stderr,"WARNING: campaign not set"
 
+        # automatically get metadata locations right for both high-mass and SM Higgs
+        try:
+            from diphotons.MetaData.JobConfig import customize
+        except ImportError:
+            from flashgg.MetaData.JobConfig import customize
+        if not kwargs.has_key("metaDataSrc"):
+            kwargs["metaDataSrc"] = customize.metaDataSrc
+        if not kwargs.has_key("crossSections"):
+            kwargs["crossSections"] = customize.crossSections
+
         # TODO: the following line is duplicated from
         #       JobConfig(..) but we can't make JobConfig.options.parseArguments()
         #       to parse anything other than sys.argv without modifying sys.argv temporarily...
@@ -578,10 +588,15 @@ class JobsManager(object):
 
         # loop over all types of processes (data, signal, background)
         for dsList in self.options.processes.values():
-            for dsName in dsList:
+            for idsName in dsList:
+                #if args were provided for this dataset, then it is a list...
+                if isinstance(idsName, list):
+                    dsName=idsName[0]
+                #... or just a string
+                else:
+                    dsName=idsName
 
                 # check if this datasets was selected
-                
                 if not self.isSelectedDataset(dsName):
                     # skip this dataset
                     continue
