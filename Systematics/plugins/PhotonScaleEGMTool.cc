@@ -4,7 +4,7 @@
 #include "DataFormats/Common/interface/Handle.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "DataFormats/Common/interface/PtrVector.h"
-#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.hh"
+#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 
 namespace edm {

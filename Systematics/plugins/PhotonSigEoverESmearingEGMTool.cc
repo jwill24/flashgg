@@ -6,7 +6,7 @@
 #include "flashgg/DataFormats/interface/Photon.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "FWCore/Framework/interface/Event.h"
-#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.hh"
+#include "EgammaAnalysis/ElectronTools/interface/EnergyScaleCorrection_class.h"
 
 namespace flashgg {
     
