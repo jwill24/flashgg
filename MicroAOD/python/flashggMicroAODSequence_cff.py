@@ -44,13 +44,13 @@ flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
                                        )
-#flashggMicroAODwithPPSSequence = cms.Sequence(flashggMicroAODSequence+flashggProtons)
-flashggMicroAODwithPPSSequence = cms.Sequence(eventCount+weightsCount
-                                              +flashggVertexMapUnique+flashggVertexMapNonUnique
-                                              +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
-                                              +flashggMuons*flashggSelectedMuons
-                                              +flashggMicroAODGenSequence
-                                              +flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
-                                              +flashggProtons
-                                              )
+flashggMicroAODwithPPSSequence = cms.Sequence(flashggMicroAODSequence+flashggProtons)
+#flashggMicroAODwithPPSSequence = cms.Sequence(eventCount+weightsCount
+#                                              +flashggVertexMapUnique+flashggVertexMapNonUnique
+#                                              +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
+#                                              +flashggMuons*flashggSelectedMuons
+#                                              +flashggMicroAODGenSequence
+#                                              +flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
+#                                              +flashggProtons
+#                                              )
 

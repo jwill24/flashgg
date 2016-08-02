@@ -11,9 +11,11 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data')
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data')
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_prompt_WillDisappearInJul16')
 #process.GlobalTag.globaltag = cms.string('81X_dataRun2_v1')
+#process.GlobalTag = GlobalTag(process.GlobalTag,'80X_mcRun2_asymptotic_2016_miniAODv2')
+process.GlobalTag = GlobalTag(process.GlobalTag,'80X_dataRun2_Prompt_v9')
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 100) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
@@ -26,9 +28,9 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 #81x_pps
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring(
-#"/store/mc/RunIISpring16MiniAODv2/GluGluHToGG_M-125_13TeV_powheg_pythia8/MINIAODSIM/PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/70000/083E0403-2825-E611-89C4-0CC47A6C1038.root",
-#'/eos/cms/tier0/store/data/Run2016C/DoubleMuon/AOD/PromptReco-v2/000/275/846/00000/146AD6E8-733E-E611-8CA5-02163E011D08.root',
-'file:/tmp/lforthom/eos/cms/tier0/store/data/Run2016C/DoubleMuon/AOD/PromptReco-v2/000/275/846/00000/146AD6E8-733E-E611-8CA5-02163E011D08.root',
+#'/store/data/Run2016C/DoubleMuon/AOD/PromptReco-v2/000/275/846/00000/146AD6E8-733E-E611-8CA5-02163E011D08.root',
+#'file:patTuple.root',
+'file:/afs/cern.ch/work/l/lforthom/private/yyanalysis/CMSSW_8_1_0_pre8/src/miniAOD/miniAOD_PAT.root',
 	)
 )
 
@@ -55,7 +57,6 @@ process.out = cms.OutputModule("PoolOutputModule", fileName = cms.untracked.stri
 # All jets are now handled in MicroAODCustomize.py
 # Switch from PFCHS to PUPPI with puppi=1 argument (both if puppi=2)
 
-#process.p = cms.Path(process.flashggMicroAODSequence)
 process.p = cms.Path(process.flashggMicroAODwithPPSSequence)
 process.e = cms.EndPath(process.out)
 
@@ -73,4 +74,4 @@ process.e = cms.EndPath(process.out)
 
 from flashgg.MicroAOD.MicroAODCustomize import customize
 customize(process)
-customize.customizeHLT(process)
+#customize.customizeHLT(process)
