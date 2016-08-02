@@ -18,7 +18,7 @@ then
   echo "CMSSW area appears to have extra files already. Start over and check README carefully."
   echo "You can remove this condition from the setup script if you wish, but proceed with caution!"
   echo
-  return 1
+  #return 1
 fi
 
 echo
