@@ -280,12 +280,28 @@
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 
-<class name="flashgg::Proton" ClassVersion="0">
+<class name="flashgg::ProtonTrack" ClassVersion="10">
+   <version ClassVersion="10" checksum="4242191721"/>
+</class>
+<class name="edm::Ptr<flashgg::ProtonTrack>"/>
+<class name="std::vector<flashgg::ProtonTrack>"/>
+<class name="edm::Wrapper<std::vector<flashgg::ProtonTrack> >"/>
+<class name="std::vector<edm::Ptr<flashgg::ProtonTrack> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::ProtonTrack> > >"/>
+
+<class name="flashgg::Proton" ClassVersion="10">
+   <version ClassVersion="10" checksum="4161704632"/>
 </class>
 <class name="edm::Ptr<flashgg::Proton>"/>
 <class name="std::vector<flashgg::Proton>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Proton> >"/>
 <class name="std::vector<edm::Ptr<flashgg::Proton> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::Proton> > >"/>
+
+<class name="flashgg::DiProtonCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="2163984682"/>
+</class>
+<class name="std::vector<flashgg::DiProtonCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiProtonCandidate> >"/>
 
 </lcgdict>

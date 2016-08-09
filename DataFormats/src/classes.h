@@ -35,6 +35,8 @@
 #include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/Proton.h"
+#include "flashgg/DataFormats/interface/ProtonTrack.h"
+#include "flashgg/DataFormats/interface/DiProtonCandidate.h"
 
 #include <vector>
 #include <map>
@@ -272,6 +274,14 @@ namespace  {
         edm::Wrapper<std::vector<flashgg::TagCandidate> >    wrp_vec_tags;
 
         // -- Laurent (PPS)
+        flashgg::ProtonTrack fgg_prot_trk;
+        edm::Ptr<flashgg::ProtonTrack> ptr_fgg_prot_trk;
+        edm::Wrapper<flashgg::ProtonTrack> wrp_fgg_prot_trk;
+        std::vector<flashgg::ProtonTrack> vec_fgg_prot_trk;
+        edm::Wrapper<std::vector<flashgg::ProtonTrack> > wrp_vec_fgg_prot_trk;
+        std::vector<edm::Ptr<flashgg::ProtonTrack> > vec_ptr_fgg_prot_trk;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::ProtonTrack> > > wrp_vec_ptr_fgg_prot_trk;
+
         flashgg::Proton fgg_prot;
         edm::Ptr<flashgg::Proton> ptr_fgg_prot;
         edm::Wrapper<flashgg::Proton> wrp_fgg_prot;
@@ -279,6 +289,10 @@ namespace  {
         edm::Wrapper<std::vector<flashgg::Proton> > wrp_vec_fgg_prot;
         std::vector<edm::Ptr<flashgg::Proton> > vec_ptr_fgg_prot;
         edm::Wrapper<std::vector<edm::Ptr<flashgg::Proton> > > wrp_vec_ptr_fgg_prot;
+
+        flashgg::DiProtonCandidate fgg_dpc;
+        std::vector<flashgg::DiProtonCandidate> vec_fgg_dpc;
+        edm::Wrapper<std::vector<flashgg::DiProtonCandidate> > wrp_vec_fgg_dpc;
     };
 }
 // Local Variables:

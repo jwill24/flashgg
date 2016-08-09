@@ -3,6 +3,7 @@
 // user include files
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/View.h"
+#include "DataFormats/Common/interface/DetSetVector.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -12,9 +13,12 @@
 
 #include "DataFormats/CTPPSReco/interface/TotemRPLocalTrack.h"
 #include "flashgg/DataFormats/interface/Proton.h"
+#include "flashgg/MicroAOD/interface/ProtonKinematicsUtils.h"
 
 using namespace std;
 using namespace edm;
+
+#include <iostream>
 
 namespace flashgg {
 
@@ -26,28 +30,90 @@ namespace flashgg {
     private:
         void produce( edm::Event &, const edm::EventSetup & );
 
-        edm::EDGetTokenT<View<TotemRPLocalTrack> > localTracksToken_;
+        edm::EDGetTokenT<DetSetVector<TotemRPLocalTrack> > localTracksToken_;
 
     };
 
     ProtonProducer::ProtonProducer( const ParameterSet &iConfig ):
-        localTracksToken_( consumes<View<TotemRPLocalTrack> >( iConfig.getParameter<InputTag>( "protonTag" ) ) )
+        localTracksToken_( consumes<DetSetVector<TotemRPLocalTrack> >( iConfig.getParameter<InputTag>( "protonTag" ) ) )
     {
         produces<vector<flashgg::Proton> >();
     }
 
     void ProtonProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<View<TotemRPLocalTrack> >  prptracks;
+        Handle<DetSetVector<TotemRPLocalTrack> >  prptracks;
         evt.getByToken( localTracksToken_, prptracks );
 
         std::auto_ptr<vector<flashgg::Proton> > protonColl( new vector<flashgg::Proton> );
 
-        for( unsigned int trackIndex = 0; trackIndex < prptracks->size(); trackIndex++ ) {
-            Ptr<TotemRPLocalTrack> prptrack = prptracks->ptrAt( trackIndex );
-            flashgg::Proton frpp = flashgg::Proton( *prptrack );
-
-            protonColl->push_back( frpp );
+        vector<flashgg::ProtonTrack> fl_tracks, fr_tracks, nl_tracks, nr_tracks;
+        for (edm::DetSetVector<TotemRPLocalTrack>::const_iterator rp=prptracks->begin(); rp!=prptracks->end(); rp++) {
+            const unsigned int det_id = rp->detId();
+            const ProtonTrack::Arm  arm  = (det_id%100==2) ? ProtonTrack::NearArm  : ProtonTrack::FarArm;    // (003/103->F, 002/102->N)
+            const ProtonTrack::Side side = (det_id/100==0) ? ProtonTrack::LeftSide : ProtonTrack::RightSide; // (002/003->L, 102/103->R)
+            for (edm::DetSet<TotemRPLocalTrack>::const_iterator proton=rp->begin(); proton!=rp->end(); proton++) {
+                if (!proton->isValid()) continue;
+                flashgg::ProtonTrack frpp = flashgg::ProtonTrack( *proton );
+                frpp.setArm( arm );
+                frpp.setSide( side );
+                frpp.setRPId( det_id );
+                if      (arm==ProtonTrack::FarArm  && side==ProtonTrack::LeftSide)  fl_tracks.push_back( frpp );
+                else if (arm==ProtonTrack::FarArm  && side==ProtonTrack::RightSide) fr_tracks.push_back( frpp );
+                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::LeftSide)  nl_tracks.push_back( frpp );
+                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::RightSide) nr_tracks.push_back( frpp );
+            }
+        }
+        /*cerr << "number of tracks reconstructed:" << endl
+             << "  left side:  near pot:" << nl_tracks.size() << ", far pot: " << fl_tracks.size() << endl
+             << "  right side: near pot:" << nr_tracks.size() << ", far pot: " << fr_tracks.size() << endl;*/
+        float min_distance = 999., xi = 0., err_xi = 0.;
+        flashgg::Proton proton;
+        {
+            min_distance = 999.;
+            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
+                if ( fr_tracks.size()==0 ) {
+                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
+                    computeXi( proton, &xi, &err_xi );
+                    proton.setXi( xi );
+                    proton.setDeltaXi( err_xi );
+                    continue;
+                }
+                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
+                    float dist = tracksDistance( *trk_n, *trk_f );
+                    if ( dist<min_distance ) {
+                        proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::LeftSide );
+                        computeXi( proton, &xi, &err_xi );
+                        proton.setXi( xi );
+                        proton.setDeltaXi( err_xi );
+                        min_distance = dist;
+                    }
+                }
+                if ( proton.isValid() ) protonColl->push_back( proton );
+            }
+        }
+        {
+            min_distance = 999.;
+            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
+                if ( fr_tracks.size()==0 ) {
+                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
+                    computeXi( proton, &xi, &err_xi );
+                    proton.setXi( xi );
+                    proton.setDeltaXi( err_xi );
+                    continue;
+                }
+                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
+                    float dist = tracksDistance( *trk_n, *trk_f );
+                    if ( dist<min_distance ) {
+                        proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::RightSide );
+                        computeXi( proton, &xi, &err_xi );
+                        proton.setXi( xi );
+                        proton.setDeltaXi( err_xi );
+                        min_distance = dist;
+                    }
+                }
+                if ( proton.isValid() ) protonColl->push_back( proton );
+            }
         }
         evt.put( protonColl );
     }
