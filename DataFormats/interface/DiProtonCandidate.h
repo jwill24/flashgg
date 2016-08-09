@@ -3,6 +3,8 @@
 
 #include "DataFormats/Common/interface/Ptr.h"
 #include "DataFormats/Common/interface/View.h"
+//#include "DataFormats/Candidate/interface/CompositeCandidate.h" 
+//#include "CommonTools/CandUtils/interface/AddFourMomenta.h" 
 #include "flashgg/DataFormats/interface/Proton.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 
