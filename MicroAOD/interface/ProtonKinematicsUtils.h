@@ -34,13 +34,13 @@ namespace flashgg {
         const float de_x = 0.2e-3/*m*/, de_rel_dx = 0.1;
 
         if ( prot.farTrack().isValid() ) {
-            *xi_ = prot.farTrack().getX0()/1.e3 / dx_f;
+            *xi_ = (prot.farTrack().getX0()*1.e-3) / dx_f;
             *err_xi_ = std::sqrt( std::pow( de_x/dx_f, 2 )
                                 + std::pow( de_rel_dx * (*xi_), 2 ) );
             return;
         }
         if ( prot.nearTrack().isValid() ) {
-            *xi_ = prot.nearTrack().getX0()/1.e3 / dx_n;
+            *xi_ = (prot.nearTrack().getX0()*1.e-3) / dx_n;
             *err_xi_ = std::sqrt( std::pow( de_x/dx_n, 2 )
                                 + std::pow( de_rel_dx * (*xi_), 2 ) );
             return;

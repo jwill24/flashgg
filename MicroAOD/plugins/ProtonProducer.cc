@@ -70,7 +70,6 @@ namespace flashgg {
         float min_distance = 999., xi = 0., err_xi = 0.;
         flashgg::Proton proton;
         {
-            min_distance = 999.;
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
@@ -79,6 +78,7 @@ namespace flashgg {
                     proton.setDeltaXi( err_xi );
                     continue;
                 }
+                min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
                     float dist = tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
@@ -93,7 +93,6 @@ namespace flashgg {
             }
         }
         {
-            min_distance = 999.;
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
@@ -102,6 +101,7 @@ namespace flashgg {
                     proton.setDeltaXi( err_xi );
                     continue;
                 }
+                min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
                     float dist = tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
