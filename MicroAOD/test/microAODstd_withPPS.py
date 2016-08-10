@@ -32,7 +32,7 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 
 #80x data
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/1E5ABF54-E019-E611-AAED-02163E01293F.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_68.root"))
+process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root"))
 
 process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...

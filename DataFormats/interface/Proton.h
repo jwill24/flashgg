@@ -31,6 +31,11 @@ namespace flashgg {
         inline void setDeltaXi( float dxi ) { dxi_ = dxi; }
         inline float deltaXi() const { return dxi_; }
 
+        inline void setT( float t ) { t_ = t; }
+        inline float t() const { return t_; }
+        inline void setDeltaT( float dt ) { dt_ = dt; }
+        inline float deltaT() const { return dt_; }
+
     private:
         void computeXi();
 
@@ -43,6 +48,8 @@ namespace flashgg {
 
         float xi_;
         float dxi_;
+        float t_;
+        float dt_;
     };
 }
 
