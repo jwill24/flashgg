@@ -255,6 +255,26 @@
 <class name="std::vector<edm::Ptr<flashgg::DiMuonCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >"/>
 
+<class name="flashgg::DiElectronCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="4006973614"/>
+</class>
+<class name="std::vector<flashgg::DiElectronCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >"/>
+<class name="edm::Ptr<flashgg::DiElectronCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiElectronCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::DiElectronCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiElectronCandidate> > >"/>
+
+<class name="flashgg::DiJetCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="1149771063"/>
+</class>
+<class name="std::vector<flashgg::DiJetCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiJetCandidate> >"/>
+<class name="edm::Ptr<flashgg::DiJetCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiJetCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::DiJetCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiJetCandidate> > >"/>
+
 <class name="flashgg::MuMuGammaCandidate" ClassVersion="10">
   <version ClassVersion="10" checksum="1087604778"/>
 </class>
@@ -264,6 +284,16 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >"/>
+
+<class name="flashgg::EEGammaCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="1330068680"/>
+</class>
+<class name="std::vector<flashgg::EEGammaCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::EEGammaCandidate> >"/>
+<class name="edm::Ptr<flashgg::EEGammaCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::EEGammaCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::EEGammaCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::EEGammaCandidate> > >"/>
 
 <class name="flashgg::PhotonJetCandidate" ClassVersion="11">
   <version ClassVersion="11" checksum="4247679146"/>

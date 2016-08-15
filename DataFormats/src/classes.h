@@ -27,6 +27,9 @@
 #include "flashgg/DataFormats/interface/VHEtTag.h"
 #include "flashgg/DataFormats/interface/DiMuonCandidate.h"   //JTao
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"   //JTao
+#include "flashgg/DataFormats/interface/DiElectronCandidate.h"
+#include "flashgg/DataFormats/interface/DiJetCandidate.h"
+#include "flashgg/DataFormats/interface/EEGammaCandidate.h"
 #include "flashgg/DataFormats/interface/PhotonJetCandidate.h" //Martina
 #include "flashgg/DataFormats/interface/TagTruthBase.h"
 #include "flashgg/DataFormats/interface/VBFTagTruth.h"
@@ -102,6 +105,24 @@ namespace  {
         edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >   wrp_vec_ptr_fgg_mmg;
         //-----------J. Tao from IHEP-Beijing--------------
 
+        flashgg::DiElectronCandidate                                        fgg_die;
+        edm::Wrapper<flashgg::DiElectronCandidate>                      wrp_fgg_die;
+        std::vector<flashgg::DiElectronCandidate>                       vec_fgg_die;
+        edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >    wrp_vec_fgg_die;
+        edm::Ptr<flashgg::DiElectronCandidate>                          ptr_fgg_die;
+        edm::Wrapper<edm::Ptr<flashgg::DiElectronCandidate> >       wrp_ptr_fgg_die;
+        std::vector<edm::Ptr<flashgg::DiElectronCandidate> >        vec_ptr_fgg_die;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::DiElectronCandidate> > >   wrp_vec_ptr_fgg_die;
+
+        flashgg::EEGammaCandidate                                        fgg_eeg;
+        edm::Wrapper<flashgg::EEGammaCandidate>                      wrp_fgg_eeg;
+        std::vector<flashgg::EEGammaCandidate>                       vec_fgg_eeg;
+        edm::Wrapper<std::vector<flashgg::EEGammaCandidate> >    wrp_vec_fgg_eeg;
+        edm::Ptr<flashgg::EEGammaCandidate>                          ptr_fgg_eeg;
+        edm::Wrapper<edm::Ptr<flashgg::EEGammaCandidate> >       wrp_ptr_fgg_eeg;
+        std::vector<edm::Ptr<flashgg::EEGammaCandidate> >        vec_ptr_fgg_eeg;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::EEGammaCandidate> > >   wrp_vec_ptr_fgg_eeg;
+
         edm::Ptr<reco::Vertex>                                        ptr_rec_vtx;
         std::vector<edm::Ptr<reco::Vertex> >                      vec_ptr_rec_vtx;
 
@@ -116,7 +137,6 @@ namespace  {
         edm::Wrapper<flashgg::SingleVertexView>                    wrp_fgg_vtxview;
         std::vector<flashgg::SingleVertexView>                     vec_fgg_vtxview;
         edm::Wrapper<std::vector<flashgg::SingleVertexView> >  wrp_vec_fgg_vtxview;
-
 
         flashgg::MinimalPileupJetIdentifier                                               pujetid;
         std::pair<edm::Ptr<reco::Vertex>, flashgg::MinimalPileupJetIdentifier>                    pair_ptr_vtx_pujetid;
@@ -136,10 +156,20 @@ namespace  {
         std::vector<flashgg::Muon>				                        vec_fgg_mu;
         edm::Wrapper<std::vector<flashgg::Muon> >                   wrp_vec_fgg_mu;
 
+        flashgg::DiJetCandidate                                        fgg_dij;
+        edm::Wrapper<flashgg::DiJetCandidate>                      wrp_fgg_dij;
+        std::vector<flashgg::DiJetCandidate>                       vec_fgg_dij;
+        edm::Wrapper<std::vector<flashgg::DiJetCandidate> >    wrp_vec_fgg_dij;
+        edm::Ptr<flashgg::DiJetCandidate>                          ptr_fgg_dij;
+        edm::Wrapper<edm::Ptr<flashgg::DiJetCandidate> >       wrp_ptr_fgg_dij;
+        std::vector<edm::Ptr<flashgg::DiJetCandidate> >        vec_ptr_fgg_dij;
+        edm::Wrapper<std::vector<edm::Ptr<flashgg::DiJetCandidate> > >   wrp_vec_ptr_fgg_dij;
+
         std::map<edm::Ptr<reco::Vertex>, float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
         std::map<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  map_str_ptr_vtx_flo;
         std::pair<std::string, std::map<edm::Ptr<reco::Vertex>, float> >  pai_str_ptr_vtx_flo;
+
         flashgg::Electron						    fgg_ele;
         edm::Ptr<flashgg::Electron> 					  ptr_fgg_ele;
         edm::Wrapper<flashgg::Electron>				  wrp_fgg_ele;
