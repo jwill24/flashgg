@@ -76,8 +76,8 @@ namespace flashgg {
                 }
 
                 DiElectronCandidate diele( LeadElectron, SubLeadElectron );
-                int ele1_charge = electron1->charge();
-                int ele2_charge = electron2->charge();
+
+                diele.setIsOSDiElePair( (electron1->charge() * electron2->charge() < 0) );
 
                 // store the dielectron into the collection
                 diElectronColl->push_back( diele );

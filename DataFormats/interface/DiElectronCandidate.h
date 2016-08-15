@@ -20,7 +20,12 @@ namespace flashgg {
         const pat::Electron *leadingElectron() const;
         const pat::Electron *subleadingElectron() const;
 
+        bool IsOSDiElePair() const { return IsOSDiElePair_; }
+        void setIsOSDiElePair( bool val ) { IsOSDiElePair_ = val;}
+
     private:
+
+        bool IsOSDiElePair_;
 
     };
 

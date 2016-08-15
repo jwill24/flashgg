@@ -256,7 +256,7 @@
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >"/>
 
 <class name="flashgg::DiElectronCandidate" ClassVersion="10">
-   <version ClassVersion="10" checksum="4006973614"/>
+   <version ClassVersion="10" checksum="1925112650"/>
 </class>
 <class name="std::vector<flashgg::DiElectronCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >"/>
