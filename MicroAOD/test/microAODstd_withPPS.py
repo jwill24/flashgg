@@ -73,7 +73,7 @@ process.flag_BadChargedCandidateFilter = cms.Path(process.BadChargedCandidateFil
 process.flag_BadPFMuonFilter = cms.Path(process.BadPFMuonFilter)
 
 
-process.p = cms.Path(process.flashggMicroAODwithPPSSequence)
+process.p = cms.Path(process.flashggMicroAODSequence)
 process.e = cms.EndPath(process.out)
 
 # Uncomment these lines to run the example commissioning module and send its output to root

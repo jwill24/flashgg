@@ -12,9 +12,6 @@ from flashgg.MicroAOD.flashggMuons_cfi import flashggMuons
 from flashgg.MicroAOD.flashggLeptonSelectors_cff import flashggSelectedMuons,flashggSelectedElectrons
 from flashgg.MicroAOD.flashggMicroAODGenSequence_cff import *
 
-from flashgg.MicroAOD.flashggProtons_cfi import flashggProtons
-from flashgg.MicroAOD.flashggDiProtons_cfi import flashggDiProtons
-
 from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
 from RecoEgamma.ElectronIdentification.ElectronMVAValueMapProducer_cfi import *
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
@@ -45,15 +42,4 @@ flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
                                        +flashggVertexMapForCHS*flashggFinalJets
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
                                        )
-flashggMicroAODwithPPSSequence = cms.Sequence(flashggMicroAODSequence
-					      +flashggProtons * flashggDiProtons
-					     )
-#flashggMicroAODwithPPSSequence = cms.Sequence(eventCount+weightsCount
-#                                              +flashggVertexMapUnique+flashggVertexMapNonUnique
-#                                              +electronMVAValueMapProducer*egmGsfElectronIDs*flashggElectrons*flashggSelectedElectrons
-#                                              +flashggMuons*flashggSelectedMuons
-#                                              +flashggMicroAODGenSequence
-#                                              +flashggPhotons * flashggRandomizedPhotons * flashggDiPhotons
-#                                              +flashggProtons
-#                                              )
 
