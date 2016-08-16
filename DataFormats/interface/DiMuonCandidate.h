@@ -36,7 +36,6 @@ namespace flashgg {
     private:
 
         edm::Ptr<reco::Vertex> vertex_;
-
         bool IsOSDiMuPair_;
         bool IfBothTightMu_;
         bool IfBothGlobalAndPF_;

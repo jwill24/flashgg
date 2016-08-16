@@ -68,6 +68,9 @@ namespace flashgg {
         for( unsigned int i = 0 ; i < dimuonPointers.size() ; i++ ) {
             Ptr<flashgg::DiMuonCandidate> dimuon = dimuonPointers[i];
             //flashgg::DiMuonCandidate dimu = flashgg::DiMuonCandidate(*dimuon);
+            if ( dimuon->vtx()->isValid() ) {
+                pvx = dimuon->vtx();
+            }
             for( unsigned int j = 0; j < photonPointers.size() ; j++ ) {
                 Ptr<flashgg::Photon> photon = photonPointers[j];
                 // A number of things need to be done once the vertex is chosen

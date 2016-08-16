@@ -31,7 +31,6 @@ namespace flashgg {
     private:
 
         edm::Ptr<reco::Vertex> vertex_;
-
         bool IsOSDiElePair_;
 
     };

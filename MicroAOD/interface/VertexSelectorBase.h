@@ -50,6 +50,17 @@ namespace flashgg {
                                                //                                          const float&
                                              )  = 0;
 
+        virtual edm::Ptr<reco::Vertex> select( const edm::Ptr<flashgg::Photon> &,
+                                               const edm::Ptr<reco::CompositeCandidate> &, const std::vector<edm::Ptr<reco::Vertex> > &,
+                                               const VertexCandidateMap &,
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const std::vector<edm::Ptr<reco::Conversion> > &,
+                                               const math::XYZPoint &,
+                                               bool
+                                               //					  const Parameters_Selector_Type&,
+                                               //                                          const float&
+                                             )  = 0;
+
         const std::string &name() const { return _selectorName; };
 
         virtual void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) = 0;

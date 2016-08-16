@@ -39,6 +39,7 @@ DiElectronCandidate::DiElectronCandidate( edm::Ptr<pat::Electron> ele1, edm::Ptr
 {
     addDaughter( *ele1 );
     addDaughter( *ele2 );
+    setVertex( dil_vertex->position() );
 
     // Adding momenta
     // Needs its own object - but why?

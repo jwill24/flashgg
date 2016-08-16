@@ -38,6 +38,7 @@ DiMuonCandidate::DiMuonCandidate( edm::Ptr<pat::Muon> muon1, edm::Ptr<pat::Muon>
 {
     addDaughter( *muon1 );
     addDaughter( *muon2 );
+    setVertex( dil_vertex->position() );
 
     // Adding momenta
     // Needs its own object - but why?
