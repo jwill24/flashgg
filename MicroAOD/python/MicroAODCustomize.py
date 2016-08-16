@@ -39,16 +39,16 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
+        self.options.register('forwardProtons',
+                              0, # 0 never, 1 always
+                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.varType.int,          # string, int, or float
+                              "forwardProtons")
         self.options.register('ZGamma',
                               '', # default value
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.string,          # string, int, or float
                               "ZGamma")
-        self.options.register('pggp',
-                              0, # 0 never, 1 always, 2 for DY and DoubleMuon
-                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
-                              VarParsing.VarParsing.varType.int,          # string, int, or float
-                              "pggp")
         self.options.register ('globalTag',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -123,10 +123,10 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
+        if self.forwardProtons == 1:
+            self.customizeDiProton(process)
         if self.ZGamma != '':
             self.customizeZGamma(process, self.ZGamma)
-        if self.pggp == 1:
-            self.customizeDiProtonDiPhoton(process)
         if "ttH" in customize.datasetName:
             self.customizeTTH(process)
         if len(self.globalTag) >0:
@@ -263,6 +263,12 @@ class MicroAODCustomize(object):
             process.flashggDiMuons.matchVertex = cms.bool(True)
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
+    def customizeDiProton(self,process):
+        process.load('flashgg/MicroAOD/flashggProtons_cfi')
+        process.load('flashgg/MicroAOD/flashggDiProtons_cfi')
+        process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
+        process.p *= process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
+
     def customizeZGamma(self,process,proc_type):
         print '---->',proc_type
         if 'ele' in proc_type: # Z -> dielectron
@@ -272,10 +278,6 @@ class MicroAODCustomize(object):
             process.p *= process.flashggDiElectrons*process.flashggEEGamma
         elif 'mu' in proc_type: # Z -> dimuon
             self.customizeMuMuGamma(process, True)
-
-    def customizeDiProtonDiPhoton(self,process):
-        process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
-        process.p *= process.flashggDiProtonsDiPhotons
 
     def customizeTTH(self,process):
         process.load("flashgg/MicroAOD/ttHGGFilter_cfi")
