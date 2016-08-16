@@ -9,7 +9,8 @@ MuMuGammaCandidate::MuMuGammaCandidate() {}
 
 MuMuGammaCandidate::~MuMuGammaCandidate() {}
 
-MuMuGammaCandidate::MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate> dimuon, edm::Ptr<flashgg::Photon> photon, edm::Ptr<reco::Vertex> vertex )
+MuMuGammaCandidate::MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate> dimuon, edm::Ptr<flashgg::Photon> photon, edm::Ptr<reco::Vertex> vertex ) :
+    matchedVertex_(false)
 {
     addDaughter( *dimuon );
     addDaughter( *photon );
@@ -37,7 +38,8 @@ MuMuGammaCandidate::MuMuGammaCandidate( const flashgg::DiMuonCandidate &dimuon, 
 }
 */
 
-MuMuGammaCandidate::MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate> dimuon,  const flashgg::Photon &photon, edm::Ptr<reco::Vertex> vertex )
+MuMuGammaCandidate::MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate> dimuon,  const flashgg::Photon &photon, edm::Ptr<reco::Vertex> vertex ) :
+    matchedVertex_(false)
 {
     addDaughter( *dimuon );
     addDaughter( photon );

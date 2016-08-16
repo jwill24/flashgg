@@ -261,6 +261,7 @@ class MicroAODCustomize(object):
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
         if matchVtx:
             process.flashggDiMuons.matchVertex = cms.bool(True)
+            process.flashggMuMuGamma.matchVertex = cms.bool(True)
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
     def customizeDiProton(self,process):

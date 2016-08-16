@@ -27,7 +27,8 @@ namespace flashgg {
         void setDiMuPtr( edm::Ptr<flashgg::DiMuonCandidate> val ) { dimuptr_ = val; }
 
         edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
-        void setVertex( edm::Ptr<reco::Vertex> val ) { vertex_ = val; }
+        bool hasMatchedDiLeptonPhotonVertex() const { return matchedVertex_; }
+        void setVertex( edm::Ptr<reco::Vertex> val, bool matched=false ) { vertex_ = val; matchedVertex_ = matched; }
 
         bool Is2012FSRZMMG() const { return Is2012FSRZMMG_; }
         void setIs2012FSRZMMG( bool val ) { Is2012FSRZMMG_  = val;}
@@ -44,11 +45,11 @@ namespace flashgg {
         double PhotonTrkIsoHollow03MuCorr() const { return PhotonTrkIsoHollow03MuCorr_; }
         void setPhotonTrkIsoHollow03MuCorr( double val ) { PhotonTrkIsoHollow03MuCorr_  = val;}
 
-
     private:
 
         edm::Ptr<flashgg::DiMuonCandidate> dimuptr_;
         edm::Ptr<reco::Vertex> vertex_;
+        bool matchedVertex_;
         bool Is2012FSRZMMG_;
         bool IsHGammaStarGamma_;
         bool IsHZgamma_;
