@@ -28,6 +28,8 @@ namespace flashgg {
 
         double minElePT_;
         double maxEleEta_;
+        bool matchVertex_;
+        double matchVertexMaxDist2_;
 
     };
 
@@ -37,6 +39,8 @@ namespace flashgg {
     {
         minElePT_ = iConfig.getParameter<double>( "minElectronPT" );
         maxEleEta_ = iConfig.getParameter<double>( "maxElectronEta" );
+        matchVertex_ = iConfig.getParameter<bool>( "matchVertex" );
+        matchVertexMaxDist2_ = pow( iConfig.getParameter<double>( "maxVertexDist" ), 2 );
         produces<vector<flashgg::DiElectronCandidate> >();
     }
 
@@ -75,7 +79,31 @@ namespace flashgg {
                     SubLeadElectron = electronPointers[i];
                 }
 
-                DiElectronCandidate diele( LeadElectron, SubLeadElectron );
+                DiElectronCandidate diele;
+                if ( matchVertex_ ) {
+                    reco::Vertex::Point lVtx = LeadElectron->vertex(), slVtx = SubLeadElectron->vertex();
+                    // First check if both the leptons' vertices are compatible with one single vertex
+                    if ( ( lVtx-slVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }
+
+                    // Then find the associated vertex object in the collection (shortest distance approach)
+                    int vtx_id = -1;
+                    float vtx_dist = 999.;
+                    for ( unsigned int k = 0 ; k < primaryVertices->size() ; k++ ) {
+                        Ptr<reco::Vertex> vtx = primaryVertices->ptrAt( k );
+                        float dist = sqrt( ( vtx->position()-lVtx ).Mag2() ); //FIXME compute wrt leading lepton's vertex or mean?
+                        if ( dist<vtx_dist ) {
+                            vtx_id = k;
+                            vtx_dist = dist;
+                        }
+                    }
+                    if ( vtx_id<0 ) { continue; }
+                    const edm::Ptr<reco::Vertex> Vertex = primaryVertices->ptrAt( vtx_id );
+
+                    diele = DiElectronCandidate( LeadElectron, SubLeadElectron, Vertex );
+                }
+                else {
+                    diele = DiElectronCandidate( LeadElectron, SubLeadElectron );
+                }
 
                 diele.setIsOSDiElePair( (electron1->charge() * electron2->charge() < 0) );
 

@@ -9,5 +9,5 @@ flashggDiMuons = cms.EDProducer('FlashggDiMuonProducer',
                                   minMuonPT=cms.double(5.),
                                   maxMuonEta=cms.double(2.4),
                                   matchVertex=cms.bool(False),
-                                  maxVertexDist=cms.double(0.2)
+                                  maxVertexDist=cms.double(0.005)
                                   )
