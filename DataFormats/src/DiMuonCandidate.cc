@@ -33,6 +33,19 @@ DiMuonCandidate::DiMuonCandidate( const pat::Muon &muon1, const pat::Muon &muon2
     addP4.set( *this );
 }
 
+DiMuonCandidate::DiMuonCandidate( edm::Ptr<pat::Muon> muon1, edm::Ptr<pat::Muon> muon2, edm::Ptr<reco::Vertex> dil_vertex ) :
+    vertex_(dil_vertex)
+{
+    addDaughter( *muon1 );
+    addDaughter( *muon2 );
+
+    // Adding momenta
+    // Needs its own object - but why?
+    // Copied from example
+    AddFourMomenta addP4;
+    addP4.set( *this );
+}
+
 const pat::Muon *DiMuonCandidate::leadingMuon() const
 {
     if( daughter( 0 )->pt() > daughter( 1 )->pt() ) {
@@ -49,6 +62,14 @@ const pat::Muon *DiMuonCandidate::subleadingMuon() const
     } else {
         return dynamic_cast<const pat::Muon *>( daughter( 0 ) );
     }
+}
+
+float DiMuonCandidate::deltaPhi() const
+{
+    float dphi = leadingMuon()->phi()-subleadingMuon()->phi();
+    while (dphi<-TMath::Pi()) dphi += 2.*TMath::Pi();
+    while (dphi> TMath::Pi()) dphi -= 2.*TMath::Pi();
+    return dphi;
 }
 
 // Local Variables:
