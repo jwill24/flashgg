@@ -256,9 +256,11 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODHLTOutputCommand
         process.out.outputCommands += microAODHLTOutputCommand # extra items for HLT efficiency
 
-    def customizeMuMuGamma(self,process):
+    def customizeMuMuGamma(self,process,matchVtx):
         process.load("flashgg/MicroAOD/flashggDiMuons_cfi")
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
+        if matchVtx:
+            process.flashggDiMuons.matchVertex = cms.bool(True)
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
     def customizeZGamma(self,process,proc_type):
@@ -266,9 +268,10 @@ class MicroAODCustomize(object):
         if 'ele' in proc_type: # Z -> dielectron
             process.load('flashgg/MicroAOD/flashggDiElectrons_cfi')
             process.load('flashgg/MicroAOD/flashggEEGamma_cfi')
+            process.flashggDuElectrons.matchVertex = cms.bool(True)
             process.p *= process.flashggDiElectrons*process.flashggEEGamma
         elif 'mu' in proc_type: # Z -> dimuon
-            self.customizeMuMuGamma(process)
+            self.customizeMuMuGamma(process, True)
 
     def customizeDiProtonDiPhoton(self,process):
         process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')

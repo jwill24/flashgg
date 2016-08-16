@@ -185,7 +185,7 @@
 <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="flashgg::Jet" ClassVersion="13">
- <version ClassVersion="13" checksum="2175929989"/>
+  <version ClassVersion="13" checksum="2175929989"/>
   <version ClassVersion="12" checksum="1532368094"/>
   <version ClassVersion="11" checksum="3459570589"/>
   <version ClassVersion="10" checksum="2045570510"/>
@@ -209,7 +209,7 @@
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
 <class name="flashgg::Muon" ClassVersion="12">
- <version ClassVersion="12" checksum="3130885816"/>
+  <version ClassVersion="12" checksum="3130885816"/>
   <version ClassVersion="11" checksum="3269337733"/>
   <version ClassVersion="10" checksum="1803852641"/>
 </class>
@@ -245,8 +245,9 @@
 <class name="std::vector<edm::Ptr<pat::MET> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >"/>
 
-<class name="flashgg::DiMuonCandidate" ClassVersion="10">
-  <version ClassVersion="10" checksum="1852293607"/>
+<class name="flashgg::DiMuonCandidate" ClassVersion="11">
+   <version ClassVersion="11" checksum="1799482127"/>
+   <version ClassVersion="10" checksum="1852293607"/>
 </class>
 <class name="std::vector<flashgg::DiMuonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiMuonCandidate> >"/>
@@ -256,7 +257,7 @@
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >"/>
 
 <class name="flashgg::DiElectronCandidate" ClassVersion="10">
-   <version ClassVersion="10" checksum="1925112650"/>
+   <version ClassVersion="10" checksum="3164183840"/>
 </class>
 <class name="std::vector<flashgg::DiElectronCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >"/>
