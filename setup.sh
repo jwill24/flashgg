@@ -144,7 +144,7 @@ echo "Setting up TnP tools..."
 #git cms-addpkg PhysiscsTools/TagAndProbe
 #git cms-merge-topic -u matteosan1:egm_tnp_76X
 git cms-merge-topic -u mplaner:egm_tnp_80x
-git cms-merge-topic -u matteosan1:smearer_76X
+#git cms-merge-topic -u matteosan1:smearer_76X
 #git remote add cmssw-ferriff https://github.com/ferriff/cmssw.git
 #git fetch cmssw-ferriff
 #git cherry-pick 5a028c0bd8fe8ea932ee602f2e82c455489f4ad1
@@ -175,6 +175,7 @@ cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/fla
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg/Systematics/data/JEC
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
+cp $CMSSW_BASE/src/flashgg/MicroAOD/data/ctpps_optics_v*.root $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files tored in flashgg into egamma tools"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data
