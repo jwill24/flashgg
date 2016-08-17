@@ -82,8 +82,11 @@ namespace flashgg {
              << "  right side: near pot:" << nr_tracks.size() << ", far pot: " << fr_tracks.size() << endl;*/
         float min_distance = 999., xi = 0., err_xi = 0.;
         flashgg::Proton proton;
+
+        // left arm protons reconstruction
         {
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
+                // checks if far pot tracks are reconstructed
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
 
@@ -94,25 +97,31 @@ namespace flashgg {
 
                     continue;
                 }
+
+                // associate a minimum-distance far pot track to this near pot track
+                flashgg::ProtonTrack ft_sel;
                 min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
                     float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
-                        proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::LeftSide );
-
-                        if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                        else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                        proton.setXi( xi );
-                        proton.setDeltaXi( err_xi );
-
+                        ft_sel = *trk_f;
                         min_distance = dist;
                     }
                 }
+                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::LeftSide );
+
+                if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
+                proton.setXi( xi );
+                proton.setDeltaXi( err_xi );
+
                 if ( proton.isValid() ) protonColl->push_back( proton );
             }
         }
+        // right arm protons reconstruction
         {
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
+                // checks if far pot tracks are reconstructed
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
 
@@ -123,20 +132,26 @@ namespace flashgg {
 
                     continue;
                 }
+
+                // associate a minimum-distance far pot track to this near pot track
+                flashgg::ProtonTrack ft_sel;
                 min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
                     float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
-                        proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::RightSide );
-
-                        if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                        else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                        proton.setXi( xi );
-                        proton.setDeltaXi( err_xi );
-
+                        ft_sel = *trk_f;
                         min_distance = dist;
                     }
                 }
+                if ( !ft_sel.isValid() ) continue;
+
+                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::RightSide );
+
+                if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
+                proton.setXi( xi );
+                proton.setDeltaXi( err_xi );
+
                 if ( proton.isValid() ) protonColl->push_back( proton );
             }
         }
