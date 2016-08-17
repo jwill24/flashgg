@@ -26,18 +26,29 @@ namespace flashgg {
     {
     public:
         ProtonProducer( const edm::ParameterSet & );
+        ~ProtonProducer();
 
     private:
         void produce( edm::Event &, const edm::EventSetup & );
 
         edm::EDGetTokenT<DetSetVector<TotemRPLocalTrack> > localTracksToken_;
 
+        bool useXiInterp_;
+        ProtonUtils::XiInterpolator* xiInterp_;
+
     };
 
     ProtonProducer::ProtonProducer( const ParameterSet &iConfig ):
-        localTracksToken_( consumes<DetSetVector<TotemRPLocalTrack> >( iConfig.getParameter<InputTag>( "protonTag" ) ) )
+        localTracksToken_( consumes<DetSetVector<TotemRPLocalTrack> >( iConfig.getParameter<InputTag>( "protonTag" ) ) ),
+        useXiInterp_( iConfig.getParameter<bool>( "useXiInterpolation" ) ), xiInterp_( 0 )
     {
         produces<vector<flashgg::Proton> >();
+        xiInterp_ = new ProtonUtils::XiInterpolator;
+        if ( useXiInterp_ ) { xiInterp_->loadInterpolationGraphs( iConfig.getParameter<edm::FileInPath>( "xiInterpolationFile" ).fullPath().c_str() ); }
+    }
+
+    ProtonProducer::~ProtonProducer() {
+        if ( xiInterp_ ) delete xiInterp_;
     }
 
     void ProtonProducer::produce( Event &evt, const EventSetup & )
@@ -46,6 +57,8 @@ namespace flashgg {
         evt.getByToken( localTracksToken_, prptracks );
 
         std::auto_ptr<vector<flashgg::Proton> > protonColl( new vector<flashgg::Proton> );
+
+        xiInterp_->setAlignmentConstants( evt.id().run() ); // run-based alignment corrections
 
         vector<flashgg::ProtonTrack> fl_tracks, fr_tracks, nl_tracks, nr_tracks;
         for (edm::DetSetVector<TotemRPLocalTrack>::const_iterator rp=prptracks->begin(); rp!=prptracks->end(); rp++) {
@@ -73,19 +86,25 @@ namespace flashgg {
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
-                    computeXi( proton, &xi, &err_xi );
+
+                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
                     proton.setXi( xi );
                     proton.setDeltaXi( err_xi );
+
                     continue;
                 }
                 min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
-                    float dist = tracksDistance( *trk_n, *trk_f );
+                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
                         proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::LeftSide );
-                        computeXi( proton, &xi, &err_xi );
+
+                        if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                        else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
                         proton.setXi( xi );
                         proton.setDeltaXi( err_xi );
+
                         min_distance = dist;
                     }
                 }
@@ -96,19 +115,25 @@ namespace flashgg {
             for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
                 if ( fr_tracks.size()==0 ) {
                     proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
-                    computeXi( proton, &xi, &err_xi );
+
+                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
                     proton.setXi( xi );
                     proton.setDeltaXi( err_xi );
+
                     continue;
                 }
                 min_distance = 999.;
                 for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
-                    float dist = tracksDistance( *trk_n, *trk_f );
+                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
                     if ( dist<min_distance ) {
                         proton = flashgg::Proton( *trk_n, *trk_f, flashgg::ProtonTrack::RightSide );
-                        computeXi( proton, &xi, &err_xi );
+
+                        if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+                        else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
                         proton.setXi( xi );
                         proton.setDeltaXi( err_xi );
+
                         min_distance = dist;
                     }
                 }
