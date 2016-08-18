@@ -258,6 +258,7 @@ class MicroAODCustomize(object):
         process.load('flashgg/MicroAOD/flashggProtons_cfi')
         process.load('flashgg/MicroAOD/flashggDiProtons_cfi')
         process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
+        #process.flashggProtons.useXiInterpolation = cms.bool(False) #FIXME for debugging purposes
         process.p *= process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
 
     def customizeTTH(self,process):

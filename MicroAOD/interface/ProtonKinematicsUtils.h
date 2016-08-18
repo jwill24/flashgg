@@ -8,6 +8,8 @@
 #include "TGraph.h"
 #include "TSpline.h"
 
+#include <iostream>
+
 namespace flashgg {
   namespace ProtonUtils {
 
@@ -26,6 +28,7 @@ namespace flashgg {
 
     RPAlignmentConstants getAlignmentConstants( const edm::RunNumber_t& run_id )
     {
+        // all alignment constants are given in mm
         RPAlignmentConstants ac;
         if ( run_id<274244 ) {
             ac.x_shift_l_f = -3.40;
@@ -67,19 +70,21 @@ namespace flashgg {
             if ( igRN_ ) delete igRN_;
         }
 
-        void loadInterpolationGraphs( const char* filename ) {
+        void loadInterpolationGraphs( const char* filename, bool conversion=false ) {
             TFile f( filename );
             if ( !f.IsOpen() ) {
                 edm::LogError("ProtonReco") << "Failed to load the interpolation graphs file";
                 return;
             }
 
-            // in case one works with Frici's input
-            /*extractSpline( (TGraph*)f.Get("XRPH_C6R5_B1"), "x_to_xi_R_1_N", igRN_, isRN_ );
-            extractSpline( (TGraph*)f.Get("XRPH_D6R5_B1"), "x_to_xi_R_1_F", igRF_, igRF_ );
-            extractSpline( (TGraph*)f.Get("XRPH_C6L5_B2"), "x_to_xi_L_1_N", igLN_, igLN_ );
-            extractSpline( (TGraph*)f.Get("XRPH_D6L5_B2"), "x_to_xi_L_1_F", igLF_, igLF_ );*/
-
+            if ( conversion ) {
+                // in case one works with Frici's input
+                extractSpline( (TGraph*)f.Get("XRPH_C6R5_B1"), "x_to_xi_R_1_N", igRN_, isRN_ );
+                extractSpline( (TGraph*)f.Get("XRPH_D6R5_B1"), "x_to_xi_R_1_F", igRF_, isRF_ );
+                extractSpline( (TGraph*)f.Get("XRPH_C6L5_B2"), "x_to_xi_L_1_N", igLN_, isLN_ );
+                extractSpline( (TGraph*)f.Get("XRPH_D6L5_B2"), "x_to_xi_L_1_F", igLF_, isLF_ );
+                return;
+            }
             // already "processed" curves
             igRN_ = (TGraph*)f.Get("g_x_to_xi_R_1_N");
             igRF_ = (TGraph*)f.Get("g_x_to_xi_R_1_F");
@@ -93,7 +98,10 @@ namespace flashgg {
 
         void setAlignmentConstants( const edm::RunNumber_t& run_id ) {
             ac_ = getAlignmentConstants( run_id );
-         }
+            edm::LogInfo("ProtonReco")
+                << "Alignment constants loaded: " << ac_.x_shift_l_f << ":" << ac_.x_shift_l_n << " / "
+                                                  << ac_.x_shift_r_f << ":" << ac_.x_shift_r_n;
+        }
         void setAlignmentConstants( const RPAlignmentConstants& ac ) { ac_ = ac; }
 
         void computeXiLinear( const Proton& prot, float* xi_, float* err_xi_ ) {
@@ -173,6 +181,7 @@ namespace flashgg {
                 const float de_xi = interp_far->Eval( x_corr + de_x );
                 *err_xi = std::sqrt( std::pow( de_xi, 2 )
                                    + std::pow( de_rel_dx * (*xi), 2 ) );
+                return;
             }
             if ( prot.nearTrack().isValid() ) {
                 x_corr = ( prot.nearTrack().getX0() + x_n_shift ) * 1.e-3;
@@ -180,6 +189,7 @@ namespace flashgg {
                 const float de_xi = interp_near->Eval( x_corr + de_x );
                 *err_xi = std::sqrt( std::pow( de_xi, 2 )
                                    + std::pow( de_rel_dx * (*xi), 2 ) );
+                return;
             }
         }
 

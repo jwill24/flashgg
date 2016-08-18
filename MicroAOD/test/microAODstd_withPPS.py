@@ -11,8 +11,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 50000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 import os
 if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
@@ -32,9 +32,19 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 
 #80x data
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/1E5ABF54-E019-E611-AAED-02163E01293F.root"))
-process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root"))
+process.source = cms.Source("PoolSource",
+    fileNames = cms.untracked.vstring(
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_59.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_60.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_61.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_63.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_64.root",
+        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_65.root",
+    )
+)
 
-process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
+#process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
 
 # Uncomment the following if you notice you have a memory leak
