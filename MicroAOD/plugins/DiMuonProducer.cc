@@ -79,7 +79,8 @@ namespace flashgg {
                     SubLeadMuon = muonPointers[i];
                 }
 
-                DiMuonCandidate dimu;
+                DiMuonCandidate dimu( LeadMuon, SubLeadMuon );
+
                 bool leadmuIsTight = false, subleadmuIsTight = false;
                 if ( matchVertex_ ) {
                     reco::Vertex::Point lVtx = LeadMuon->vertex(), slVtx = SubLeadMuon->vertex();
@@ -95,19 +96,19 @@ namespace flashgg {
                         /*if ( ( vtx->position()-lVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }
                         if ( ( vtx->position()-slVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }*/
                         if ( dist<vtx_dist ) {
+cout << "vertex candidate found for the dimuon vertex!!!!!" << endl;
                             vtx_id = k;
                             vtx_dist = dist;
                         }
                     }
                     if ( vtx_id<0 ) { continue; }
-                    const edm::Ptr<reco::Vertex> Vertex = primaryVertices->ptrAt( vtx_id );
 
-                    dimu = DiMuonCandidate( LeadMuon, SubLeadMuon, Vertex );
-                    leadmuIsTight  = LeadMuon->isTightMuon( *Vertex );
-                    subleadmuIsTight  = SubLeadMuon->isTightMuon( *Vertex );
+                    Ptr<reco::Vertex> vtx = primaryVertices->ptrAt( vtx_id );
+                    dimu.setVertex( vtx );
+                    leadmuIsTight  = LeadMuon->isTightMuon( *vtx );
+                    subleadmuIsTight  = SubLeadMuon->isTightMuon( *vtx );
                 }
                 else {
-                    dimu = DiMuonCandidate( LeadMuon, SubLeadMuon );
                     leadmuIsTight  = LeadMuon->isTightMuon( myrecovtx );
                     subleadmuIsTight  = SubLeadMuon->isTightMuon( myrecovtx );
                 }

@@ -34,18 +34,6 @@ EEGammaCandidate::EEGammaCandidate( edm::Ptr<flashgg::DiElectronCandidate> diele
     addP4.set( *this );
 }
 
-
-const flashgg::DiElectronCandidate *EEGammaCandidate::EEG_DiEle() const
-{
-    return dynamic_cast<const flashgg::DiElectronCandidate *>( daughter( 0 ) );
-}
-
-
-const flashgg::Photon *EEGammaCandidate::EEG_Photon() const
-{
-    return dynamic_cast<const flashgg::Photon *>( daughter( 1 ) );
-}
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

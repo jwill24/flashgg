@@ -20,8 +20,13 @@ namespace flashgg {
 
         const pat::Muon *leadingMuon() const;
         const pat::Muon *subleadingMuon() const;
-        const edm::Ptr<reco::Vertex> vtx() const { return vertex_; }
+        const reco::Vertex* vtx() const { return vertex_.get(); }
+        edm::Ptr<reco::Vertex> VertexPtr() const { return vertex_; }
 
+        void setVertex( edm::Ptr<reco::Vertex> vtx ) {
+            vertex_ = vtx;
+            reco::CompositeCandidate::setVertex( vtx->position() );
+         }
         float deltaPhi() const;
 
         bool IsOSDiMuPair() const { return IsOSDiMuPair_; }

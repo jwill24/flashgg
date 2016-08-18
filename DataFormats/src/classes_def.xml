@@ -277,8 +277,8 @@
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiJetCandidate> > >"/>
 
 <class name="flashgg::MuMuGammaCandidate" ClassVersion="11">
-  <version ClassVersion="11" checksum="1031923807"/>
-  <version ClassVersion="10" checksum="1087604778"/>
+   <version ClassVersion="11" checksum="1031923807"/>
+   <version ClassVersion="10" checksum="1087604778"/>
 </class>
 <class name="std::vector<flashgg::MuMuGammaCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::MuMuGammaCandidate> >"/>

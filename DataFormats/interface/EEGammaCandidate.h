@@ -20,13 +20,12 @@ namespace flashgg {
         EEGammaCandidate( edm::Ptr<flashgg::DiElectronCandidate>, const flashgg::Photon &, edm::Ptr<reco::Vertex> ); //mixed
         ~EEGammaCandidate();
 
-        const flashgg::DiElectronCandidate *EEG_DiEle() const;
-        const flashgg::Photon *EEG_Photon() const;
+        const flashgg::Photon *photon() const { return dynamic_cast<const flashgg::Photon*>( daughter( 1 ) ); }
 
-        edm::Ptr<flashgg::DiElectronCandidate> DiElePtr() const { return dieleptr_; }
+        const flashgg::DiElectronCandidate* dielectron() const { return dieleptr_.get(); }
         void setDiElePtr( edm::Ptr<flashgg::DiElectronCandidate> val ) { dieleptr_ = val; }
 
-        edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
+        edm::Ptr<reco::Vertex> vtx() const { return vertex_; }
         void setVertex( edm::Ptr<reco::Vertex> val ) { vertex_ = val; }
 
     private:

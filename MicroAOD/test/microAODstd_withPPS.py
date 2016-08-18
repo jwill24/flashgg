@@ -11,8 +11,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 1000) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 100 )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10000) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 import os
 if os.environ["CMSSW_VERSION"].count("CMSSW_7_6"):
@@ -35,6 +35,7 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
 #        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root",
+        "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_454.root",
         "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_455.root",
     )
 )

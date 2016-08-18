@@ -46,7 +46,7 @@ class MicroAODCustomize(object):
                               "forwardProtons")
         self.options.register('ZGamma',
                               '', # default value
-                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.multiplicity.list, # singleton or list
                               VarParsing.VarParsing.varType.string,          # string, int, or float
                               "ZGamma")
         self.options.register ('globalTag',
@@ -125,7 +125,7 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         if self.forwardProtons == 1:
             self.customizeDiProton(process)
-        if self.ZGamma != '':
+        if len(self.ZGamma) >0:
             self.customizeZGamma(process, self.ZGamma)
         if "ttH" in customize.datasetName:
             self.customizeTTH(process)
@@ -270,15 +270,17 @@ class MicroAODCustomize(object):
         process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
         process.p *= process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
 
-    def customizeZGamma(self,process,proc_type):
-        print '---->',proc_type
-        if 'ele' in proc_type: # Z -> dielectron
+    def customizeZGamma(self,process,proc_types):
+        print ' ### Zgamma objects producer switched on. Enabled Z decay modes:',proc_types
+        if 'mu' in proc_types: # Z -> dimuon
+            self.customizeMuMuGamma(process, True)
+        if 'ele' in proc_types: # Z -> dielectron
             process.load('flashgg/MicroAOD/flashggDiElectrons_cfi')
             process.load('flashgg/MicroAOD/flashggEEGamma_cfi')
-            process.flashggDuElectrons.matchVertex = cms.bool(True)
+            process.flashggDiElectrons.matchVertex = cms.bool(True)
             process.p *= process.flashggDiElectrons*process.flashggEEGamma
-        elif 'mu' in proc_type: # Z -> dimuon
-            self.customizeMuMuGamma(process, True)
+        if 'jet' in proc_types: # Z -> dijet
+            print('Not yet implemented!')
 
     def customizeTTH(self,process):
         process.load("flashgg/MicroAOD/ttHGGFilter_cfi")

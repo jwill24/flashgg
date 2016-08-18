@@ -101,7 +101,7 @@ namespace flashgg {
             Ptr<flashgg::DiMuonCandidate> dimuon = dimuonPointers[i];
             //flashgg::DiMuonCandidate dimu = flashgg::DiMuonCandidate(*dimuon);
             if ( dimuon->vtx()->isValid() ) {
-                pvx = dimuon->vtx();
+                pvx = dimuon->VertexPtr();
             }
             for( unsigned int j = 0; j < photonPointers.size() ; j++ ) {
                 Ptr<flashgg::Photon> photon = photonPointers[j];

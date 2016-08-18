@@ -20,13 +20,19 @@ namespace flashgg {
         MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon &, edm::Ptr<reco::Vertex> ); //mixed
         ~MuMuGammaCandidate();
 
-        const flashgg::DiMuonCandidate *MMG_DiMu() const;
-        const flashgg::Photon *MMG_Photon() const;
-
+        // backward-compatibility methods
+        const flashgg::DiMuonCandidate *MMG_DiMu() const { return dimuon(); }
+        const flashgg::Photon *MMG_Photon() const { return photon(); }
         edm::Ptr<flashgg::DiMuonCandidate> DiMuPtr() const { return dimuptr_; }
+        edm::Ptr<reco::Vertex> VertexPtr() const { return vertex_; }
+        //
+
+        const flashgg::Photon* photon() const { return dynamic_cast<const flashgg::Photon*>( daughter( 1 ) ); }
+
+        const flashgg::DiMuonCandidate* dimuon() const { return dimuptr_.get(); }
         void setDiMuPtr( edm::Ptr<flashgg::DiMuonCandidate> val ) { dimuptr_ = val; }
 
-        edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
+        const reco::Vertex* vtx() const { return vertex_.get(); }
         bool hasMatchedDiLeptonPhotonVertex() const { return matchedVertex_; }
         void setVertex( edm::Ptr<reco::Vertex> val, bool matched=false ) { vertex_ = val; matchedVertex_ = matched; }
 
