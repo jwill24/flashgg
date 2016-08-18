@@ -21,17 +21,17 @@ namespace flashgg {
         const flashgg::Proton *proton2() const { return proton2_.get(); }
 
         void setM( float val ) { m_ = val; }
-        float M() const { return m_; }
+        float mass() const { return m_; }
         void setDeltaM( float val ) { dm_ = val; }
-        float deltaM() const { return dm_; }
+        float deltaMass() const { return dm_; }
 
         void setRapidity( float val ) { rap_ = val; }
         float rapidity() const { return rap_; }
         void setDeltaRapidity( float val ) { drap_ = val; }
         float deltaRapidity() const { return drap_; }
 
-        bool operator <( const DiProtonCandidate &b ) const { return M()<b.M(); } //FIXME
-        bool operator >( const DiProtonCandidate &b ) const { return M()>b.M(); } //FIXME
+        bool operator <( const DiProtonCandidate &b ) const { return mass()<b.mass(); } //FIXME
+        bool operator >( const DiProtonCandidate &b ) const { return mass()>b.mass(); } //FIXME
 
         DiProtonCandidate *clone() const { return ( new DiProtonCandidate( *this ) ); }
 
