@@ -314,5 +314,6 @@
 <class name="edm::Wrapper<flashgg::DiProtonDiPhotonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiProtonDiPhotonCandidate> >"/>
 
+<class name="std::map<TotemRPDetId,flashgg::ProtonTrack>"/>
 
 </lcgdict>

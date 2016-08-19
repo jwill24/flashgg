@@ -130,14 +130,14 @@ namespace flashgg {
             const float de_x = 0.2e-3/*m*/, de_rel_dx = 0.1;
 
             float x_corr = 0.;
-            if ( prot.farTrack()->isValid() ) {
+            if ( prot.farTrack() && prot.farTrack()->isValid() ) {
                 x_corr = ( prot.farTrack()->getX0() + x_f_shift ) * 1.e-3;
                 *xi_ = x_corr / dx_f;
                 *err_xi_ = std::sqrt( std::pow( de_x/dx_f, 2 )
                                     + std::pow( de_rel_dx * (*xi_), 2 ) );
                 return;
             }
-            if ( prot.nearTrack()->isValid() ) {
+            if ( prot.nearTrack() && prot.nearTrack()->isValid() ) {
                 x_corr = ( prot.nearTrack()->getX0() + x_n_shift ) * 1.e-3;
                 *xi_ = x_corr / dx_n;
                 *err_xi_ = std::sqrt( std::pow( de_x/dx_n, 2 )
@@ -175,7 +175,7 @@ namespace flashgg {
             const float de_x = 0.4e-3/*m*/, de_rel_dx = 0.1;
 
             float x_corr = 0.;
-            if ( prot.farTrack()->isValid() ) {
+            if ( prot.farTrack() && prot.farTrack()->isValid() ) {
                 x_corr = ( prot.farTrack()->getX0() + x_f_shift ) * 1.e-3;
                 *xi = interp_far->Eval( x_corr );
                 const float de_xi = interp_far->Eval( x_corr + de_x );
@@ -183,7 +183,7 @@ namespace flashgg {
                                    + std::pow( de_rel_dx * (*xi), 2 ) );
                 return;
             }
-            if ( prot.nearTrack()->isValid() ) {
+            if ( prot.nearTrack() && prot.nearTrack()->isValid() ) {
                 x_corr = ( prot.nearTrack()->getX0() + x_n_shift ) * 1.e-3;
                 *xi = interp_near->Eval( x_corr );
                 const float de_xi = interp_near->Eval( x_corr + de_x );

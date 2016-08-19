@@ -39,6 +39,8 @@
 #include "flashgg/DataFormats/interface/DiProtonCandidate.h"
 #include "flashgg/DataFormats/interface/DiProtonDiPhotonCandidate.h"
 
+#include "DataFormats/TotemRPDetId/interface/TotemRPDetId.h"
+
 #include <vector>
 #include <map>
 
@@ -300,6 +302,8 @@ namespace  {
         flashgg::DiProtonDiPhotonCandidate fgg_dpdpc;
         std::vector<flashgg::DiProtonDiPhotonCandidate> vec_fgg_dpdpc;
         edm::Wrapper<std::vector<flashgg::DiProtonDiPhotonCandidate> > wrp_vec_fgg_dpdpc;
+
+        std::map<TotemRPDetId,flashgg::ProtonTrack> map_fgg_did_prot_trk;
     };
 }
 // Local Variables:

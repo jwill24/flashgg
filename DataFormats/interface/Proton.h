@@ -27,13 +27,13 @@ namespace flashgg {
 
         inline const ProtonTrack* nearTrack() const {
             for ( std::map< TotemRPDetId, ProtonTrack >::const_iterator it = tracks_map_.begin(); it != tracks_map_.end(); it++ ) {
-                if ( it->first.detector()==1 ) return &(it->second); // CHECK MEEEE!
+                if ( it->first.detector()==ProtonTrack::NearStation ) return &(it->second);
             }
             return 0;
         }
         inline const ProtonTrack* farTrack() const {
             for ( std::map< TotemRPDetId, ProtonTrack >::const_iterator it = tracks_map_.begin(); it != tracks_map_.end(); it++ ) {
-                if ( it->first.detector()==0 ) return &(it->second); // CHECK MEEEE!
+                if ( it->first.detector()==ProtonTrack::FarStation ) return &(it->second);
             }
             return 0;
         }

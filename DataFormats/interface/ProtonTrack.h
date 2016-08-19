@@ -13,8 +13,7 @@ namespace flashgg {
     {
 
     public:
-        //FIXME to be replaced by a TotemRPDetId... eventually
-        enum Station { FarStation = 0, NearStation = 1 };
+        enum Station { NearStation = 2, FarStation = 3 };
         enum Side { LeftSide = 0, RightSide = 1 };
 
         ProtonTrack();
@@ -26,7 +25,7 @@ namespace flashgg {
         inline unsigned int decDetId() const { return TotemRPDetId::rawToDecId( det_id_ ); }
         inline TotemRPDetId detId() const { return det_id_; }
 
-        inline Station station() const { return static_cast<Station>( det_id_.detector() ); }
+        inline Station station() const { return static_cast<Station>( det_id_.romanPot() ); } //FIXME shouldn't it be detector()?
         inline Side side() const { return static_cast<Side>( det_id_.arm() );  }
 
     private:

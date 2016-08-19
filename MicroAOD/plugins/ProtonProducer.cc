@@ -68,6 +68,10 @@ namespace flashgg {
                 if (!proton->isValid()) continue;
 
                 flashgg::ProtonTrack frpp = flashgg::ProtonTrack( det_id, *proton );
+
+std::cout << ">>> " << det_id << " ---> station:" << frpp.station() << " side:" << frpp.side() << std::endl;
+std::cout << "     (" << frpp.decDetId() << ") >>>>>>>> " << frpp.detId() << std::endl;
+
                 const flashgg::ProtonTrack::Station st = frpp.station();
                 const flashgg::ProtonTrack::Side side = frpp.side();
 
