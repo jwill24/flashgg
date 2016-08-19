@@ -8,8 +8,8 @@ ProtonTrack::ProtonTrack()
 ProtonTrack::~ProtonTrack()
 {}
 
-ProtonTrack::ProtonTrack( unsigned short det_id, const TotemRPLocalTrack& arplt ) :
-    TotemRPLocalTrack(arplt), det_id_(det_id)
+ProtonTrack::ProtonTrack( unsigned int dec_det_id, const TotemRPLocalTrack& arplt ) :
+    TotemRPLocalTrack(arplt), det_id_( TotemRPDetId::decToRawId( dec_det_id ) )
 {}
 
 // Local Variables:

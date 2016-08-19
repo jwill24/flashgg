@@ -9,19 +9,18 @@ Proton::Proton() :
 Proton::~Proton()
 {}
 
-Proton::Proton( const ProtonTrack& atrack, const ProtonTrack::Side& aside, const ProtonTrack::Station& asta ) :
+Proton::Proton( const ProtonTrack& atrack, const ProtonTrack::Side& aside ) :
     valid_(true), side_(aside)
 {
-    switch (asta) {
-        case ProtonTrack::NearStation: near_track_ = atrack; break;
-        case ProtonTrack::FarStation:  far_track_ = atrack;  break;
-        default: return;
-    }
+    tracks_map_.insert( std::pair<TotemRPDetId,ProtonTrack>( atrack.detId(), atrack ) );
 }
 
 Proton::Proton( const ProtonTrack& aneartrack, const ProtonTrack& afartrack, const ProtonTrack::Side& aside ) :
-    valid_(true), near_track_(aneartrack), far_track_(afartrack), side_(aside)
-{}
+    valid_(true), side_(aside)
+{
+    tracks_map_.insert( std::pair<TotemRPDetId,ProtonTrack>( afartrack.detId(),  afartrack ) );
+    tracks_map_.insert( std::pair<TotemRPDetId,ProtonTrack>( aneartrack.detId(), aneartrack ) );
+}
 
 // Local Variables:
 // mode:c++

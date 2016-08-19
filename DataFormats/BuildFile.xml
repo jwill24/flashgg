@@ -4,6 +4,7 @@
 <use   name="DataFormats/VertexReco"/>
 <use   name="DataFormats/Common"/>
 <use   name="DataFormats/JetReco"/>
+<use   name="DataFormats/TotemRPDetId"/>
 <use name="rootrflx"/>
 
 <export>

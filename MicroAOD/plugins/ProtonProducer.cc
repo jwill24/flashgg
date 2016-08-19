@@ -94,7 +94,7 @@ namespace flashgg {
 
         if ( near_coll.size()==0 ) {
             for ( vector<flashgg::ProtonTrack>::const_iterator trk_f=far_coll.begin(); trk_f!=far_coll.end(); trk_f++ ) {
-                proton = flashgg::Proton( *trk_f, side, flashgg::ProtonTrack::FarStation );
+                proton = flashgg::Proton( *trk_f, side );
 
                 if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
                 else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
@@ -109,7 +109,7 @@ namespace flashgg {
         for (vector<flashgg::ProtonTrack>::const_iterator trk_n=near_coll.begin(); trk_n!=near_coll.end(); trk_n++) {
             // checks if far pot tracks are reconstructed
             if ( far_coll.size()==0 ) {
-                proton = flashgg::Proton( *trk_n, side, flashgg::ProtonTrack::NearStation );
+                proton = flashgg::Proton( *trk_n, side );
 
                 if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
                 else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }

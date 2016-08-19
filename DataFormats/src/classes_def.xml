@@ -281,7 +281,7 @@
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
 
 <class name="flashgg::ProtonTrack" ClassVersion="10">
-   <version ClassVersion="10" checksum="2622892440"/>
+   <version ClassVersion="10" checksum="2617085927"/>
 </class>
 <class name="edm::Ptr<flashgg::ProtonTrack>"/>
 <class name="std::vector<flashgg::ProtonTrack>"/>
@@ -290,7 +290,7 @@
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::ProtonTrack> > >"/>
 
 <class name="flashgg::Proton" ClassVersion="10">
-   <version ClassVersion="10" checksum="2753051226"/>
+   <version ClassVersion="10" checksum="385214639"/>
 </class>
 <class name="edm::Ptr<flashgg::Proton>"/>
 <class name="std::vector<flashgg::Proton>"/>

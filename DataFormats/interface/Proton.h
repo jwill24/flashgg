@@ -13,7 +13,7 @@ namespace flashgg {
 
     public:
         Proton();
-        Proton( const ProtonTrack&, const ProtonTrack::Side&, const ProtonTrack::Station& );
+        Proton( const ProtonTrack&, const ProtonTrack::Side& );
         Proton( const ProtonTrack&, const ProtonTrack&, const ProtonTrack::Side& );
         ~Proton();
 
@@ -25,8 +25,18 @@ namespace flashgg {
         inline void setSide( const ProtonTrack::Side& side ) { side_ = side; }
         inline ProtonTrack::Side side() const { return side_; }
 
-        inline ProtonTrack nearTrack() const { return near_track_; }
-        inline ProtonTrack farTrack() const { return far_track_; }
+        inline const ProtonTrack* nearTrack() const {
+            for ( std::map< TotemRPDetId, ProtonTrack >::const_iterator it = tracks_map_.begin(); it != tracks_map_.end(); it++ ) {
+                if ( it->first.detector()==1 ) return &(it->second); // CHECK MEEEE!
+            }
+            return 0;
+        }
+        inline const ProtonTrack* farTrack() const {
+            for ( std::map< TotemRPDetId, ProtonTrack >::const_iterator it = tracks_map_.begin(); it != tracks_map_.end(); it++ ) {
+                if ( it->first.detector()==0 ) return &(it->second); // CHECK MEEEE!
+            }
+            return 0;
+        }
 
         /////////////////////////////////////////////////////////////
         //
@@ -65,8 +75,7 @@ namespace flashgg {
 
         bool valid_;
 
-        ProtonTrack near_track_;
-        ProtonTrack far_track_;
+        std::map< TotemRPDetId, ProtonTrack > tracks_map_;
 
         ProtonTrack::Side side_;
 
