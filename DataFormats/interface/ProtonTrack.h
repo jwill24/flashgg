@@ -10,28 +10,24 @@ namespace flashgg {
     {
 
     public:
-        enum Arm { FarArm = 0, NearArm = 1 };
+        //FIXME to be replaced by a TotemRPDetId... eventually
+        enum Station { FarStation = 0, NearStation = 1 };
         enum Side { LeftSide = -1, RightSide = 1 };
 
         ProtonTrack();
-        ProtonTrack( const TotemRPLocalTrack & );
+        ProtonTrack( unsigned short, const TotemRPLocalTrack & );
         ~ProtonTrack();
 
         ProtonTrack *clone() const { return ( new ProtonTrack( *this ) ); }
 
-        inline void setRPId(unsigned int rpid) { rp_id_ = rpid; }
-        inline unsigned int RPId() const { return rp_id_; }
+        inline void setDetId(unsigned int rpid) { det_id_ = rpid; }
+        inline unsigned int detId() const { return det_id_; }
 
-        inline void setArm(const Arm& arm) { arm_ = arm; }
-        inline Arm arm() const { return arm_; }
-
-        inline void setSide(const Side& side) { side_ = side; }
-        inline Side side() const { return side_; }
+        inline Station station() const { return (det_id_%100==2) ? NearStation : FarStation; } // 003/103->F, 002/102->N
+        inline Side    side()    const { return (det_id_/100==0) ? LeftSide    : RightSide;  } // 002/003->L, 102/103->R
 
     private:
-        Arm arm_;
-        Side side_;
-        unsigned int rp_id_;
+        unsigned int det_id_;
     };
 }
 

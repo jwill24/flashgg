@@ -30,6 +30,7 @@ namespace flashgg {
 
     private:
         void produce( edm::Event &, const edm::EventSetup & );
+        void reconstructOneArm( const vector<flashgg::ProtonTrack>&, const vector<flashgg::ProtonTrack>&, const flashgg::ProtonTrack::Side&, vector<flashgg::Proton>& );
 
         edm::EDGetTokenT<DetSetVector<TotemRPLocalTrack> > localTracksToken_;
 
@@ -63,99 +64,81 @@ namespace flashgg {
         vector<flashgg::ProtonTrack> fl_tracks, fr_tracks, nl_tracks, nr_tracks;
         for (edm::DetSetVector<TotemRPLocalTrack>::const_iterator rp=prptracks->begin(); rp!=prptracks->end(); rp++) {
             const unsigned int det_id = rp->detId();
-            const ProtonTrack::Arm  arm  = (det_id%100==2) ? ProtonTrack::NearArm  : ProtonTrack::FarArm;    // (003/103->F, 002/102->N)
-            const ProtonTrack::Side side = (det_id/100==0) ? ProtonTrack::LeftSide : ProtonTrack::RightSide; // (002/003->L, 102/103->R)
             for (edm::DetSet<TotemRPLocalTrack>::const_iterator proton=rp->begin(); proton!=rp->end(); proton++) {
                 if (!proton->isValid()) continue;
-                flashgg::ProtonTrack frpp = flashgg::ProtonTrack( *proton );
-                frpp.setArm( arm );
-                frpp.setSide( side );
-                frpp.setRPId( det_id );
-                if      (arm==ProtonTrack::FarArm  && side==ProtonTrack::LeftSide)  fl_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::FarArm  && side==ProtonTrack::RightSide) fr_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::LeftSide)  nl_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::RightSide) nr_tracks.push_back( frpp );
+
+                flashgg::ProtonTrack frpp = flashgg::ProtonTrack( det_id, *proton );
+                const flashgg::ProtonTrack::Station st = frpp.station();
+                const flashgg::ProtonTrack::Side side = frpp.side();
+
+                if      (st==ProtonTrack::FarStation  && side==ProtonTrack::LeftSide)  fl_tracks.push_back( frpp );
+                else if (st==ProtonTrack::FarStation  && side==ProtonTrack::RightSide) fr_tracks.push_back( frpp );
+                else if (st==ProtonTrack::NearStation && side==ProtonTrack::LeftSide)  nl_tracks.push_back( frpp );
+                else if (st==ProtonTrack::NearStation && side==ProtonTrack::RightSide) nr_tracks.push_back( frpp );
             }
         }
         /*cerr << "number of tracks reconstructed:" << endl
              << "  left side:  near pot:" << nl_tracks.size() << ", far pot: " << fl_tracks.size() << endl
              << "  right side: near pot:" << nr_tracks.size() << ", far pot: " << fr_tracks.size() << endl;*/
+
+        reconstructOneArm( nl_tracks, fl_tracks, flashgg::ProtonTrack::LeftSide, *protonColl );
+        reconstructOneArm( nr_tracks, fr_tracks, flashgg::ProtonTrack::RightSide, *protonColl );
+
+        evt.put( protonColl );
+    }
+
+    void ProtonProducer::reconstructOneArm( const vector<flashgg::ProtonTrack>& near_coll, const vector<flashgg::ProtonTrack>& far_coll, const flashgg::ProtonTrack::Side& side, vector<flashgg::Proton>& out_coll )
+    {
         float min_distance = 999., xi = 0., err_xi = 0.;
         flashgg::Proton proton;
 
-        // left arm protons reconstruction
-        {
-            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
-                // checks if far pot tracks are reconstructed
-                if ( fr_tracks.size()==0 ) {
-                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
-
-                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                    proton.setXi( xi );
-                    proton.setDeltaXi( err_xi );
-
-                    continue;
-                }
-
-                // associate a minimum-distance far pot track to this near pot track
-                flashgg::ProtonTrack ft_sel;
-                min_distance = 999.;
-                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
-                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
-                    if ( dist<min_distance ) {
-                        ft_sel = *trk_f;
-                        min_distance = dist;
-                    }
-                }
-                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::LeftSide );
+        if ( near_coll.size()==0 ) {
+            for ( vector<flashgg::ProtonTrack>::const_iterator trk_f=far_coll.begin(); trk_f!=far_coll.end(); trk_f++ ) {
+                proton = flashgg::Proton( *trk_f, side, flashgg::ProtonTrack::FarStation );
 
                 if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
                 else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                proton.setXi( xi );
-                proton.setDeltaXi( err_xi );
+                proton.setXi( xi, err_xi );
 
-                if ( proton.isValid() ) protonColl->push_back( proton );
+                if ( proton.isValid() ) out_coll.push_back( proton );
             }
+
+            return;
         }
-        // right arm protons reconstruction
-        {
-            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
-                // checks if far pot tracks are reconstructed
-                if ( fr_tracks.size()==0 ) {
-                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
 
-                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                    proton.setXi( xi );
-                    proton.setDeltaXi( err_xi );
-
-                    continue;
-                }
-
-                // associate a minimum-distance far pot track to this near pot track
-                flashgg::ProtonTrack ft_sel;
-                min_distance = 999.;
-                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
-                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
-                    if ( dist<min_distance ) {
-                        ft_sel = *trk_f;
-                        min_distance = dist;
-                    }
-                }
-                if ( !ft_sel.isValid() ) continue;
-
-                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::RightSide );
+        for (vector<flashgg::ProtonTrack>::const_iterator trk_n=near_coll.begin(); trk_n!=near_coll.end(); trk_n++) {
+            // checks if far pot tracks are reconstructed
+            if ( far_coll.size()==0 ) {
+                proton = flashgg::Proton( *trk_n, side, flashgg::ProtonTrack::NearStation );
 
                 if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
                 else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                proton.setXi( xi );
-                proton.setDeltaXi( err_xi );
+                proton.setXi( xi, err_xi );
 
-                if ( proton.isValid() ) protonColl->push_back( proton );
+                if ( proton.isValid() ) out_coll.push_back( proton );
+                continue;
             }
+
+            // associate a minimum-distance far pot track to this near pot track
+            flashgg::ProtonTrack ft_sel;
+            min_distance = 999.;
+            for (vector<flashgg::ProtonTrack>::const_iterator trk_f=far_coll.begin(); trk_f!=far_coll.end(); trk_f++) {
+                float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
+                if ( dist<min_distance ) {
+                    ft_sel = *trk_f;
+                    min_distance = dist;
+                }
+            }
+            if ( !ft_sel.isValid() ) continue;
+
+            proton = flashgg::Proton( *trk_n, ft_sel, side );
+
+            if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
+            else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
+            proton.setXi( xi, err_xi );
+
+            if ( proton.isValid() ) out_coll.push_back( proton );
         }
-        evt.put( protonColl );
     }
 }
 
