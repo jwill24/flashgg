@@ -20,27 +20,29 @@ namespace flashgg {
         const flashgg::Proton *proton1() const { return proton1_.get(); }
         const flashgg::Proton *proton2() const { return proton2_.get(); }
 
-        void setM( float val ) { m_ = val; }
-        float M() const { return m_; }
-        void setDeltaM( float val ) { dm_ = val; }
-        float deltaM() const { return dm_; }
+        void setMass( float m, float m_err ) {
+            m_ = m;
+            m_err_ = m_err;
+        }
+        float mass() const { return m_; }
+        float massError() const { return m_err_; }
 
-        void setRapidity( float val ) { rap_ = val; }
+        void setRapidity( float rap, float rap_err ) {
+            rap_ = rap;
+            rap_err_ = rap_err;
+        }
         float rapidity() const { return rap_; }
-        void setDeltaRapidity( float val ) { drap_ = val; }
-        float deltaRapidity() const { return drap_; }
+        float rapidityError() const { return rap_err_; }
 
-        bool operator <( const DiProtonCandidate &b ) const { return M()<b.M(); } //FIXME
-        bool operator >( const DiProtonCandidate &b ) const { return M()>b.M(); } //FIXME
+        bool operator <( const DiProtonCandidate &b ) const { return mass()<b.mass(); } //FIXME
+        bool operator >( const DiProtonCandidate &b ) const { return mass()>b.mass(); } //FIXME
 
         DiProtonCandidate *clone() const { return ( new DiProtonCandidate( *this ) ); }
 
     private:
         
-        float m_;
-        float dm_;
-        float rap_;
-        float drap_;
+        float m_, m_err_;
+        float rap_, rap_err_;
 
         edm::Ptr<flashgg::Proton> proton1_;
         edm::Ptr<flashgg::Proton> proton2_;

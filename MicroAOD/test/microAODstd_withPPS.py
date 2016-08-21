@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.GlobalTag import GlobalTag
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 10000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32( 50000) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 import os
@@ -34,13 +34,12 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/1E5ABF54-E019-E611-AAED-02163E01293F.root"))
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-#        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root",
         "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_454.root",
         "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_455.root",
     )
 )
 
-process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
+#process.MessageLogger.cerr.threshold = 'ERROR' # can't get suppressWarning to work: disable all warnings for now
 # process.MessageLogger.suppressWarning.extend(['SimpleMemoryCheck','MemoryCheck']) # this would have been better...
 
 # Uncomment the following if you notice you have a memory leak

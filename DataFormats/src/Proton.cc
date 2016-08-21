@@ -9,12 +9,12 @@ Proton::Proton() :
 Proton::~Proton()
 {}
 
-Proton::Proton( const ProtonTrack& atrack, const ProtonTrack::Side& aside, const ProtonTrack::Arm& aarm ) :
+Proton::Proton( const ProtonTrack& atrack, const ProtonTrack::Side& aside, const ProtonTrack::Station& asta ) :
     valid_(true), side_(aside)
 {
-    switch (aarm) {
-        case ProtonTrack::NearArm: near_track_ = atrack; break;
-        case ProtonTrack::FarArm:  far_track_ = atrack;  break;
+    switch (asta) {
+        case ProtonTrack::NearStation: near_track_ = atrack; break;
+        case ProtonTrack::FarStation:  far_track_ = atrack;  break;
         default: return;
     }
 }

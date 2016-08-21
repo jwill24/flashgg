@@ -21,16 +21,16 @@ namespace flashgg {
         const flashgg::DiProtonCandidate *diproton() const { return diproton_.get(); }
         const flashgg::DiPhotonCandidate *diphoton() const { return diphoton_.get(); }
 
-        float rpM() const { return diproton_->M(); }
-        float rpDeltaM() const { return diproton_->deltaM(); }
-        float cmsM() const { return diphoton_->mass(); }
+        float massRP() const { return diproton_->mass(); }
+        float massRPError() const { return diproton_->massError(); }
+        float massCMS() const { return diphoton_->mass(); }
 
-        float rpRapidity() const { return diproton_->rapidity(); }
-        float rpDeltaRapidity() const { return diproton_->deltaRapidity(); }
-        float cmsRapidity() const { return ( diphoton_->leadingPhoton()->p4() + diphoton_->subLeadingPhoton()->p4() ).Rapidity(); }
+        float rapidityRP() const { return diproton_->rapidity(); }
+        float rapidityRPError() const { return diproton_->rapidityError(); }
+        float rapidityCMS() const { return ( diphoton_->leadingPhoton()->p4() + diphoton_->subLeadingPhoton()->p4() ).Rapidity(); }
 
-        bool operator <( const DiProtonDiPhotonCandidate &b ) const { return rpM()<b.rpM(); } //FIXME
-        bool operator >( const DiProtonDiPhotonCandidate &b ) const { return rpM()>b.rpM(); } //FIXME
+        bool operator <( const DiProtonDiPhotonCandidate &b ) const { return massRP()<b.massRP(); } //FIXME
+        bool operator >( const DiProtonDiPhotonCandidate &b ) const { return massRP()>b.massRP(); } //FIXME
 
         DiProtonDiPhotonCandidate *clone() const { return ( new DiProtonDiPhotonCandidate( *this ) ); }
 

@@ -1,6 +1,8 @@
 #ifndef FLASHgg_Proton_h
 #define FLASHgg_Proton_h
 
+#include "DataFormats/VertexReco/interface/Vertex.h"
+
 #include "flashgg/DataFormats/interface/ProtonTrack.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 
@@ -11,7 +13,7 @@ namespace flashgg {
 
     public:
         Proton();
-        Proton( const ProtonTrack&, const ProtonTrack::Side&, const ProtonTrack::Arm& );
+        Proton( const ProtonTrack&, const ProtonTrack::Side&, const ProtonTrack::Station& );
         Proton( const ProtonTrack&, const ProtonTrack&, const ProtonTrack::Side& );
         ~Proton();
 
@@ -26,15 +28,37 @@ namespace flashgg {
         inline ProtonTrack nearTrack() const { return near_track_; }
         inline ProtonTrack farTrack() const { return far_track_; }
 
-        inline void setXi( float xi ) { xi_ = xi; }
+        /////////////////////////////////////////////////////////////
+        //
+        inline void setXi( float xi, float xi_err ) {
+            xi_ = xi;
+            xi_err_ = xi_err;
+        }
         inline float xi() const { return xi_; }
-        inline void setDeltaXi( float dxi ) { dxi_ = dxi; }
-        inline float deltaXi() const { return dxi_; }
+        inline float xiError() const { return xi_err_; }
 
-        inline void setT( float t ) { t_ = t; }
+        /////////////////////////////////////////////////////////////
+
+        inline void setThetaX( float thx, float thx_err ) {
+            theta_x_ = thx;
+            theta_x_err_ = thx_err;
+        }
+        inline float thetaX() const { return theta_x_; }
+        inline float thetaXError() const { return theta_x_err_; }
+
+        /////////////////////////////////////////////////////////////
+
+        inline void setT( float t, float t_err ) {
+            t_ = t;
+            t_err_ = t_err;
+        }
         inline float t() const { return t_; }
-        inline void setDeltaT( float dt ) { dt_ = dt; }
-        inline float deltaT() const { return dt_; }
+        inline float tError() const { return t_err_; }
+
+        /////////////////////////////////////////////////////////////
+
+        inline void setVertex( const edm::Ptr<reco::Vertex>& vtx ) { vtx_ = vtx; }
+        inline const reco::Vertex* vtx() const { return vtx_.get(); }
 
     private:
         void computeXi();
@@ -46,10 +70,11 @@ namespace flashgg {
 
         ProtonTrack::Side side_;
 
-        float xi_;
-        float dxi_;
-        float t_;
-        float dt_;
+        edm::Ptr<reco::Vertex> vtx_;
+
+        float xi_, xi_err_;
+        float t_, t_err_;
+        float theta_x_, theta_x_err_;
     };
 }
 
