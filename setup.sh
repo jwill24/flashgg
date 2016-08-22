@@ -180,7 +180,6 @@ cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/fla
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV6*.db $CMSSW_BASE/src/flashgg/Systematics/data/JEC
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_80X.db $CMSSW_BASE/src/flashgg
-cp $CMSSW_BASE/src/flashgg/MicroAOD/data/ctpps_optics_v*.root $CMSSW_BASE/src/flashgg
 
 echo "copy smearing files tored in flashgg into egamma tools"
 cp $CMSSW_BASE/src/flashgg/Systematics/data/Golden*.dat $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/data

@@ -4,78 +4,21 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/CTPPSReco/interface/Proton.h"
 
-#include "flashgg/DataFormats/interface/ProtonTrack.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
-    class Proton : public WeightedObject
+    class Proton : public WeightedObject, public reco::Proton
     {
 
     public:
         Proton();
-        Proton( const ProtonTrack&, const ProtonTrack::Side&, const ProtonTrack::Station& );
-        Proton( const ProtonTrack&, const ProtonTrack&, const ProtonTrack::Side& );
+        Proton( const reco::Proton& );
         ~Proton();
 
         Proton *clone() const { return ( new Proton( *this ) ); }
 
-        inline void setValid( bool valid=true ) { valid_ = valid; }
-        inline bool isValid() const { return valid_; }
-
-        inline void setSide( const ProtonTrack::Side& side ) { side_ = side; }
-        inline ProtonTrack::Side side() const { return side_; }
-
-        inline ProtonTrack nearTrack() const { return near_track_; }
-        inline ProtonTrack farTrack() const { return far_track_; }
-
-        /////////////////////////////////////////////////////////////
-        //
-        inline void setXi( float xi, float xi_err ) {
-            xi_ = xi;
-            xi_err_ = xi_err;
-        }
-        inline float xi() const { return xi_; }
-        inline float xiError() const { return xi_err_; }
-
-        /////////////////////////////////////////////////////////////
-
-        inline void setThetaX( float thx, float thx_err ) {
-            theta_x_ = thx;
-            theta_x_err_ = thx_err;
-        }
-        inline float thetaX() const { return theta_x_; }
-        inline float thetaXError() const { return theta_x_err_; }
-
-        /////////////////////////////////////////////////////////////
-
-        inline void setT( float t, float t_err ) {
-            t_ = t;
-            t_err_ = t_err;
-        }
-        inline float t() const { return t_; }
-        inline float tError() const { return t_err_; }
-
-        /////////////////////////////////////////////////////////////
-
-        inline void setVertex( const edm::Ptr<reco::Vertex>& vtx ) { vtx_ = vtx; }
-        inline const reco::Vertex* vtx() const { return vtx_.get(); }
-
     private:
-        void computeXi();
-
-        bool valid_;
-
-        ProtonTrack near_track_;
-        ProtonTrack far_track_;
-
-        ProtonTrack::Side side_;
-
-        edm::Ptr<reco::Vertex> vtx_;
-
-        float xi_, xi_err_;
-        float t_, t_err_;
-        float theta_x_, theta_x_err_;
     };
 }
 
