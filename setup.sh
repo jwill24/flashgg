@@ -169,6 +169,11 @@ else
     echo "Not setting up PDF weight because we appear to be in CMSSW 8"
 fi
 
+echo "Setting up forward proton reconstruction..."
+git cms-merge-topic forthommel:forward-proton-reco_80X
+git cms-addpkg DataFormats/CTPPSReco
+git cms-addpkg RecoCTPPS/ProtonProducer
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg

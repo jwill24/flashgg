@@ -2,6 +2,7 @@
 #define FLASHgg_Proton_h
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/CTPPSReco/interface/Proton.h"
 
 #include "flashgg/DataFormats/interface/ProtonTrack.h"
 #include "flashgg/DataFormats/interface/WeightedObject.h"
