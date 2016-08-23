@@ -46,7 +46,7 @@ namespace flashgg {
         for( unsigned int i = 0 ; i < protons->size() ; i++ ) {
 
             Ptr<flashgg::Proton> pp1 = protons->ptrAt( i );
-            flashgg::ProtonTrack::Side side1 = pp1->side();
+            reco::ProtonTrack::Side side1 = pp1->side();
 
             for( unsigned int j = i + 1 ; j < protons->size() ; j++ ) {
                 Ptr<flashgg::Proton> pp2 = protons->ptrAt( j );
