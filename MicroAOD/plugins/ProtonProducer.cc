@@ -11,9 +11,8 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "DataFormats/CTPPSReco/interface/TotemRPLocalTrack.h"
+#include "DataFormats/CTPPSReco/interface/Proton.h"
 #include "flashgg/DataFormats/interface/Proton.h"
-#include "flashgg/MicroAOD/interface/ProtonKinematicsUtils.h"
 
 using namespace std;
 using namespace edm;
@@ -31,130 +30,30 @@ namespace flashgg {
     private:
         void produce( edm::Event &, const edm::EventSetup & );
 
-        edm::EDGetTokenT<DetSetVector<TotemRPLocalTrack> > localTracksToken_;
-
-        bool useXiInterp_;
-        ProtonUtils::XiInterpolator* xiInterp_;
+        edm::EDGetTokenT<vector<reco::Proton> > protonsToken_;
 
     };
 
     ProtonProducer::ProtonProducer( const ParameterSet &iConfig ):
-        localTracksToken_( consumes<DetSetVector<TotemRPLocalTrack> >( iConfig.getParameter<InputTag>( "protonTag" ) ) ),
-        useXiInterp_( iConfig.getParameter<bool>( "useXiInterpolation" ) ), xiInterp_( 0 )
+        protonsToken_( consumes<vector<reco::Proton> >( iConfig.getParameter<InputTag>( "protonTag" ) ) )
     {
         produces<vector<flashgg::Proton> >();
-        xiInterp_ = new ProtonUtils::XiInterpolator;
-        if ( useXiInterp_ ) { xiInterp_->loadInterpolationGraphs( iConfig.getParameter<edm::FileInPath>( "xiInterpolationFile" ).fullPath().c_str() ); }
     }
 
-    ProtonProducer::~ProtonProducer() {
-        if ( xiInterp_ ) delete xiInterp_;
-    }
+    ProtonProducer::~ProtonProducer() {}
 
     void ProtonProducer::produce( Event &evt, const EventSetup & )
     {
-        Handle<DetSetVector<TotemRPLocalTrack> >  prptracks;
-        evt.getByToken( localTracksToken_, prptracks );
+        Handle<vector<reco::Proton> >  protons;
+        evt.getByToken( protonsToken_, protons );
 
         std::auto_ptr<vector<flashgg::Proton> > protonColl( new vector<flashgg::Proton> );
 
-        xiInterp_->setAlignmentConstants( evt.id().run() ); // run-based alignment corrections
-
-        vector<flashgg::ProtonTrack> fl_tracks, fr_tracks, nl_tracks, nr_tracks;
-        for (edm::DetSetVector<TotemRPLocalTrack>::const_iterator rp=prptracks->begin(); rp!=prptracks->end(); rp++) {
-            const unsigned int det_id = rp->detId();
-            const ProtonTrack::Arm  arm  = (det_id%100==2) ? ProtonTrack::NearArm  : ProtonTrack::FarArm;    // (003/103->F, 002/102->N)
-            const ProtonTrack::Side side = (det_id/100==0) ? ProtonTrack::LeftSide : ProtonTrack::RightSide; // (002/003->L, 102/103->R)
-            for (edm::DetSet<TotemRPLocalTrack>::const_iterator proton=rp->begin(); proton!=rp->end(); proton++) {
-                if (!proton->isValid()) continue;
-                flashgg::ProtonTrack frpp = flashgg::ProtonTrack( *proton );
-                frpp.setArm( arm );
-                frpp.setSide( side );
-                frpp.setRPId( det_id );
-                if      (arm==ProtonTrack::FarArm  && side==ProtonTrack::LeftSide)  fl_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::FarArm  && side==ProtonTrack::RightSide) fr_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::LeftSide)  nl_tracks.push_back( frpp );
-                else if (arm==ProtonTrack::NearArm && side==ProtonTrack::RightSide) nr_tracks.push_back( frpp );
-            }
+        for ( vector<reco::Proton>::const_iterator p = protons->begin(); p < protons->end(); p++ ) {
+            if (!p->isValid()) continue;
+            protonColl->push_back( flashgg::Proton( *p ) );
         }
-        /*cerr << "number of tracks reconstructed:" << endl
-             << "  left side:  near pot:" << nl_tracks.size() << ", far pot: " << fl_tracks.size() << endl
-             << "  right side: near pot:" << nr_tracks.size() << ", far pot: " << fr_tracks.size() << endl;*/
-        float min_distance = 999., xi = 0., err_xi = 0.;
-        flashgg::Proton proton;
 
-        // left arm protons reconstruction
-        {
-            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nl_tracks.begin(); trk_n!=nl_tracks.end(); trk_n++) {
-                // checks if far pot tracks are reconstructed
-                if ( fr_tracks.size()==0 ) {
-                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::LeftSide, flashgg::ProtonTrack::NearArm );
-
-                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                    proton.setXi( xi );
-                    proton.setDeltaXi( err_xi );
-
-                    continue;
-                }
-
-                // associate a minimum-distance far pot track to this near pot track
-                flashgg::ProtonTrack ft_sel;
-                min_distance = 999.;
-                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fl_tracks.begin(); trk_f!=fl_tracks.end(); trk_f++) {
-                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
-                    if ( dist<min_distance ) {
-                        ft_sel = *trk_f;
-                        min_distance = dist;
-                    }
-                }
-                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::LeftSide );
-
-                if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                proton.setXi( xi );
-                proton.setDeltaXi( err_xi );
-
-                if ( proton.isValid() ) protonColl->push_back( proton );
-            }
-        }
-        // right arm protons reconstruction
-        {
-            for (vector<flashgg::ProtonTrack>::const_iterator trk_n=nr_tracks.begin(); trk_n!=nr_tracks.end(); trk_n++) {
-                // checks if far pot tracks are reconstructed
-                if ( fr_tracks.size()==0 ) {
-                    proton = flashgg::Proton( *trk_n, flashgg::ProtonTrack::RightSide, flashgg::ProtonTrack::NearArm );
-
-                    if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                    else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                    proton.setXi( xi );
-                    proton.setDeltaXi( err_xi );
-
-                    continue;
-                }
-
-                // associate a minimum-distance far pot track to this near pot track
-                flashgg::ProtonTrack ft_sel;
-                min_distance = 999.;
-                for (vector<flashgg::ProtonTrack>::const_iterator trk_f=fr_tracks.begin(); trk_f!=fr_tracks.end(); trk_f++) {
-                    float dist = ProtonUtils::tracksDistance( *trk_n, *trk_f );
-                    if ( dist<min_distance ) {
-                        ft_sel = *trk_f;
-                        min_distance = dist;
-                    }
-                }
-                if ( !ft_sel.isValid() ) continue;
-
-                proton = flashgg::Proton( *trk_n, ft_sel, flashgg::ProtonTrack::RightSide );
-
-                if ( useXiInterp_ ) { xiInterp_->computeXiSpline( proton, &xi, &err_xi ); }
-                else                { xiInterp_->computeXiLinear( proton, &xi, &err_xi ); }
-                proton.setXi( xi );
-                proton.setDeltaXi( err_xi );
-
-                if ( proton.isValid() ) protonColl->push_back( proton );
-            }
-        }
         evt.put( protonColl );
     }
 }

@@ -22,11 +22,11 @@ namespace flashgg {
         const flashgg::DiPhotonCandidate *diphoton() const { return diphoton_.get(); }
 
         float massRP() const { return diproton_->mass(); }
-        float deltaMassRP() const { return diproton_->deltaMass(); }
+        float massRPError() const { return diproton_->massError(); }
         float massCMS() const { return diphoton_->mass(); }
 
         float rapidityRP() const { return diproton_->rapidity(); }
-        float deltaRapidityRP() const { return diproton_->deltaRapidity(); }
+        float rapidityRPError() const { return diproton_->rapidityError(); }
         float rapidityCMS() const { return ( diphoton_->leadingPhoton()->p4() + diphoton_->subLeadingPhoton()->p4() ).Rapidity(); }
 
         bool operator <( const DiProtonDiPhotonCandidate &b ) const { return massRP()<b.massRP(); } //FIXME

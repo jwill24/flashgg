@@ -264,11 +264,12 @@ class MicroAODCustomize(object):
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
 
     def customizeDiProton(self,process):
+        process.load('RecoCTPPS.Configuration.recoCTPPS_cff')
         process.load('flashgg/MicroAOD/flashggProtons_cfi')
         process.load('flashgg/MicroAOD/flashggDiProtons_cfi')
         process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
         #process.flashggProtons.useXiInterpolation = cms.bool(False) #FIXME for debugging purposes
-        process.p *= process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
+        process.p *= process.protonProducer * process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
 
     def customizeZGamma(self,process,proc_type):
         print '---->',proc_type

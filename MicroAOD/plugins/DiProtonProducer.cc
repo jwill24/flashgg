@@ -46,7 +46,7 @@ namespace flashgg {
         for( unsigned int i = 0 ; i < protons->size() ; i++ ) {
 
             Ptr<flashgg::Proton> pp1 = protons->ptrAt( i );
-            flashgg::ProtonTrack::Side side1 = pp1->side();
+            reco::ProtonTrack::Side side1 = pp1->side();
 
             for( unsigned int j = i + 1 ; j < protons->size() ; j++ ) {
                 Ptr<flashgg::Proton> pp2 = protons->ptrAt( j );
@@ -54,15 +54,13 @@ namespace flashgg {
 
                 DiProtonCandidate dipro( pp1, pp2 );
 
-                const float rel_xi = std::sqrt( std::pow( pp1->deltaXi()/pp1->xi(), 2 ) + std::pow( pp2->deltaXi()/pp2->xi(), 2 ) );
+                const float rel_xi = std::sqrt( std::pow( pp1->xiError()/pp1->xi(), 2 ) + std::pow( pp2->xiError()/pp2->xi(), 2 ) );
 
-                dipro.setM( sqrtS_*1.e3 * std::sqrt( pp1->xi() * pp2->xi() ) );
-                dipro.setDeltaM( dipro.mass()/2. * rel_xi );
+                dipro.setMass( sqrtS_*1.e3 * std::sqrt( pp1->xi() * pp2->xi() ), dipro.mass()/2. * rel_xi );
 
                 //cout << "--->proton pair found: xi1=" << pp1->xi() << ", xi2=" << pp2->xi() << " --> m=" << dipro.mass() << endl;
 
-                dipro.setRapidity( 0.5 * std::log( pp2->xi() / pp1->xi() ) );
-                dipro.setDeltaRapidity( 0.5 * rel_xi );
+                dipro.setRapidity( 0.5 * std::log( pp2->xi() / pp1->xi() ), 0.5 * rel_xi );
 
                 // store the diproton into the collection
                 diProtonColl->push_back( dipro );
