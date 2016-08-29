@@ -34,6 +34,20 @@ DiJetCandidate::DiJetCandidate( const pat::Jet &jet1, const pat::Jet &jet2 )
     addP4.set( *this );
 }
 
+DiJetCandidate::DiJetCandidate( edm::Ptr<pat::Jet> jet1, edm::Ptr<pat::Jet> jet2, edm::Ptr<reco::Vertex> dijet_vertex ) :
+    vertex_(dijet_vertex)
+{
+    addDaughter( *jet1 );
+    addDaughter( *jet2 );
+    setVertex( dijet_vertex->position() );
+
+    // Adding momenta
+    // Needs its own object - but why?
+    // Copied from example
+    AddFourMomenta addP4;
+    addP4.set( *this );
+}
+
 const pat::Jet *DiJetCandidate::leadingJet() const
 {
     if( daughter( 0 )->pt() > daughter( 1 )->pt() ) {
@@ -50,6 +64,14 @@ const pat::Jet *DiJetCandidate::subleadingJet() const
     } else {
         return dynamic_cast<const pat::Jet *>( daughter( 0 ) );
     }
+}
+
+float DiJetCandidate::deltaPhi() const
+{
+    float dphi = leadingJet()->phi()-subleadingJet()->phi();
+    while (dphi<-TMath::Pi()) dphi += 2.*TMath::Pi();
+    while (dphi> TMath::Pi()) dphi -= 2.*TMath::Pi();
+    return dphi;
 }
 
 // Local Variables:
