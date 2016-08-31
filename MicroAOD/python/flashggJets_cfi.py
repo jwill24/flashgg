@@ -112,7 +112,7 @@ def addFlashggPFCHSJets(process,
   
   from RecoJets.JetProducers.QGTagger_cfi import QGTagger
   setattr( process, 'QGTaggerPFCHS' + label,  
-           QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs', vertexIndex = cms.uint32(vertexIndex),
+           QGTagger.clone( srcJets   = 'patJetsAK4PFCHSLeg' + label ,jetsLabel = 'QGL_AK4PFchs', ###vertexIndex = cms.uint32(vertexIndex),
                            srcVertexCollection = 'offlineSlimmedPrimaryVertices'))
 
   from RecoJets.JetProducers.PileupJetIDParams_cfi import full_80x_chs
@@ -166,7 +166,7 @@ def addFlashggPuppiJets(process,
                               vertexName            = cms.InputTag('offlineSlimmedPrimaryVertices'),
                               diPhotonTag           = cms.InputTag('flashggDiPhotons'),
                               VertexCandidateMapTag = cms.InputTag('flashggVertexMapForPUPPI'),
-                              vertexIndex           = cms.uint32(vertexIndex),
+###                              vertexIndex           = cms.uint32(vertexIndex),
                               debug                 = cms.untracked.bool(debug)
                             )
   )
