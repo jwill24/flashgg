@@ -34,13 +34,10 @@ process.RandomNumberGeneratorService.flashggRandomizedPhotons = cms.PSet(
 #process.source = cms.Source("PoolSource",fileNames=cms.untracked.vstring("/store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/158/00000/1E5ABF54-E019-E611-AAED-02163E01293F.root"))
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_59.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_60.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_61.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_62.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_63.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_64.root",
-        "/store/user/lforthom/DoubleEG/miniAOD_pps_run2016C_v2/160721_152108/0000/miniAOD_PAT_65.root",
+#        "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_454.root",
+#        "/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016C_doublemu_v1/160815_181834/0000/miniAOD_PAT_455.root",
+        '/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016B_doublemu_v1/160816_130035/0000/miniAOD_PAT_454.root',
+        '/store/group/phys_diffraction/lforthom/DoubleMuon/miniAOD_pps_run2016B_doublemu_v1/160816_130035/0000/miniAOD_PAT_455.root',
     )
 )
 

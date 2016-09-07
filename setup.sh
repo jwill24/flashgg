@@ -170,7 +170,7 @@ else
 fi
 
 echo "Setting up forward proton reconstruction..."
-git cms-merge-topic forthommel:forward-proton-reco_80X
+#git cms-merge-topic forthommel:forward-proton-reco_80X
 git cms-addpkg DataFormats/CTPPSReco
 git cms-addpkg RecoCTPPS/ProtonProducer
 

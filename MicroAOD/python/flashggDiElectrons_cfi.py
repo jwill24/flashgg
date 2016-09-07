@@ -1,13 +1,11 @@
-#-----------J. Tao from IHEP-Beijing--------------
-
 import FWCore.ParameterSet.Config as cms
 
-flashggDiMuons = cms.EDProducer('FlashggDiMuonProducer',
-                                  MuonTag=cms.InputTag('flashggSelectedMuons'),
+flashggDiElectrons = cms.EDProducer('FlashggDiElectronProducer',
+                                  ElectronTag=cms.InputTag('flashggSelectedElectrons'),
                                   VertexTag=cms.InputTag('offlineSlimmedPrimaryVertices'), 
                                   ##Parameters                                                
-                                  minMuonPT=cms.double(5.),
-                                  maxMuonEta=cms.double(2.4),
+                                  minElectronPT=cms.double(5.),
+                                  maxElectronEta=cms.double(2.4),
                                   matchVertex=cms.bool(False),
                                   maxVertexDist=cms.double(0.005)
                                   )
