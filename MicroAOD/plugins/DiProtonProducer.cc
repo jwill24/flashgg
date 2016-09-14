@@ -61,12 +61,11 @@ namespace flashgg {
                 DiProtonCandidate dipro( p1, p2 );
 
                 const float rel_xi = std::sqrt( std::pow( p1->xiError()/p1->xi(), 2 ) + std::pow( p2->xiError()/p2->xi(), 2 ) );
+                const float mass = sqrtS_*1.e3 * std::sqrt( p1->xi() * p2->xi() ),
+                            rapidity = 0.5 * std::log( p2->xi() / p1->xi() );
 
-                dipro.setMass( sqrtS_*1.e3 * std::sqrt( p1->xi() * p2->xi() ), dipro.mass()/2. * rel_xi );
-
-                //cout << "--->proton pair found: xi1=" << pp1->xi() << ", xi2=" << pp2->xi() << " --> m=" << dipro.mass() << endl;
-
-                dipro.setRapidity( 0.5 * std::log( p2->xi() / p1->xi() ), 0.5 * rel_xi );
+                dipro.setMass( mass, mass/2. * rel_xi );
+                dipro.setRapidity( rapidity, 0.5 * rel_xi );
 
                 // store the diproton into the collection
                 diProtonColl->push_back( dipro );
