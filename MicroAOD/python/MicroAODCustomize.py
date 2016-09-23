@@ -274,6 +274,12 @@ class MicroAODCustomize(object):
 
     def customizeZGamma(self,process,proc_types):
         print '### Zgamma objects producer switched on. Enabled Z decay modes:',proc_types
+        # remove the diphoton computation
+        for pathName in process.paths:
+            path = getattr(process, pathName)
+            path.remove(process.flashggDiPhotons)
+            process.out.outputCommands.append('drop *_flashggDiPhotons_*_*')
+        # add the final state objects
         if 'mu' in proc_types: # Z -> dimuon
             self.customizeMuMuGamma(process, True)
         if 'ele' in proc_types: # Z -> dielectron
@@ -282,9 +288,10 @@ class MicroAODCustomize(object):
             process.flashggDiElectrons.matchVertex = cms.bool(True)
             process.p *= process.flashggDiElectrons*process.flashggEEGamma
         if 'jet' in proc_types: # Z -> dijet
-            print('## Dijet final state highly experimental...')
+            print('# Dijet final state highly experimental...')
             process.load('flashgg/MicroAOD/flashggDiJets_cfi')
             process.p *= process.flashggDiJets
+            process.out.outputCommands.append('keep *_flashggDiJet*_*_*')
 
     def customizeTTH(self,process):
         process.load("flashgg/MicroAOD/ttHGGFilter_cfi")

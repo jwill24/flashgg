@@ -258,6 +258,7 @@
 <class name="flashgg::DiElectronCandidate" ClassVersion="10">
    <version ClassVersion="10" checksum="3164183840"/>
 </class>
+<class name="edm::Wrapper<flashgg::DiElectronCandidate>"/>
 <class name="std::vector<flashgg::DiElectronCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >"/>
 <class name="edm::Ptr<flashgg::DiElectronCandidate>"/>
@@ -268,6 +269,7 @@
 <class name="flashgg::DiJetCandidate" ClassVersion="10">
    <version ClassVersion="10" checksum="2811607325"/>
 </class>
+<class name="edm::Wrapper<flashgg::DiJetCandidate>"/>
 <class name="std::vector<flashgg::DiJetCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiJetCandidate> >"/>
 <class name="edm::Ptr<flashgg::DiJetCandidate>"/>
@@ -279,6 +281,7 @@
    <version ClassVersion="11" checksum="1031923807"/>
    <version ClassVersion="10" checksum="1087604778"/>
 </class>
+<class name="edm::Wrapper<flashgg::MuMuGammaCandidate>"/>
 <class name="std::vector<flashgg::MuMuGammaCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::MuMuGammaCandidate> >"/>
 <class name="edm::Ptr<flashgg::MuMuGammaCandidate>"/>
@@ -289,6 +292,7 @@
 <class name="flashgg::EEGammaCandidate" ClassVersion="10">
    <version ClassVersion="10" checksum="1330068680"/>
 </class>
+<class name="edm::Wrapper<flashgg::EEGammaCandidate>"/>
 <class name="std::vector<flashgg::EEGammaCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::EEGammaCandidate> >"/>
 <class name="edm::Ptr<flashgg::EEGammaCandidate>"/>

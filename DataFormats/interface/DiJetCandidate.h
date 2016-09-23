@@ -21,7 +21,7 @@ namespace flashgg {
         ~DiJetCandidate();
 
         const pat::Jet *leadingJet() const;
-        const pat::Jet *subleadingJet() const;
+        const pat::Jet *subLeadingJet() const;
 
         bool operator <( const DiJetCandidate &b ) const { return mass()<b.mass(); } //FIXME
         bool operator >( const DiJetCandidate &b ) const { return mass()>b.mass(); } //FIXME
@@ -31,6 +31,7 @@ namespace flashgg {
         DiJetCandidate *clone() const { return ( new DiJetCandidate( *this ) ); }
 
     private:
+        void computeP4();
 
         edm::Ptr<pat::Jet> jet1_;
         edm::Ptr<pat::Jet> jet2_;

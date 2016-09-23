@@ -20,6 +20,8 @@ DiJetCandidate::DiJetCandidate( edm::Ptr<pat::Jet> jet1, edm::Ptr<pat::Jet> jet2
     // Copied from example
     AddFourMomenta addP4;
     addP4.set( *this );
+
+    computeP4();
 }
 
 DiJetCandidate::DiJetCandidate( const pat::Jet &jet1, const pat::Jet &jet2 )
@@ -32,6 +34,8 @@ DiJetCandidate::DiJetCandidate( const pat::Jet &jet1, const pat::Jet &jet2 )
     // Copied from example
     AddFourMomenta addP4;
     addP4.set( *this );
+
+    computeP4();
 }
 
 DiJetCandidate::DiJetCandidate( edm::Ptr<pat::Jet> jet1, edm::Ptr<pat::Jet> jet2, edm::Ptr<reco::Vertex> dijet_vertex ) :
@@ -46,6 +50,8 @@ DiJetCandidate::DiJetCandidate( edm::Ptr<pat::Jet> jet1, edm::Ptr<pat::Jet> jet2
     // Copied from example
     AddFourMomenta addP4;
     addP4.set( *this );
+
+    computeP4();
 }
 
 const pat::Jet *DiJetCandidate::leadingJet() const
@@ -57,7 +63,7 @@ const pat::Jet *DiJetCandidate::leadingJet() const
     }
 }
 
-const pat::Jet *DiJetCandidate::subleadingJet() const
+const pat::Jet *DiJetCandidate::subLeadingJet() const
 {
     if( daughter( 0 )->pt() > daughter( 1 )->pt() ) {
         return dynamic_cast<const pat::Jet *>( daughter( 1 ) );
@@ -66,9 +72,14 @@ const pat::Jet *DiJetCandidate::subleadingJet() const
     }
 }
 
+void DiJetCandidate::computeP4()
+{
+    this->setP4( leadingJet()->p4() + subLeadingJet()->p4() );
+}
+
 float DiJetCandidate::deltaPhi() const
 {
-    float dphi = leadingJet()->phi()-subleadingJet()->phi();
+    float dphi = leadingJet()->phi()-subLeadingJet()->phi();
     while (dphi<-TMath::Pi()) dphi += 2.*TMath::Pi();
     while (dphi> TMath::Pi()) dphi -= 2.*TMath::Pi();
     return dphi;
