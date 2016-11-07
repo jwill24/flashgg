@@ -6,4 +6,6 @@ diphotonDumper = cms.EDAnalyzer('CutBasedDiPhotonDumper',
                                 **diphotonDumpConfig.parameters_()
                                 )
 
-
+diphotonDumperWithProtons = cms.EDAnalyzer('CutBasedDiProtonDiPhotonDumper',
+                                           **diphotonDumpConfig.parameters_()
+                                           )
