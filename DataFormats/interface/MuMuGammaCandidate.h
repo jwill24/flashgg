@@ -20,14 +20,21 @@ namespace flashgg {
         MuMuGammaCandidate( edm::Ptr<flashgg::DiMuonCandidate>, const flashgg::Photon &, edm::Ptr<reco::Vertex> ); //mixed
         ~MuMuGammaCandidate();
 
-        const flashgg::DiMuonCandidate *MMG_DiMu() const;
-        const flashgg::Photon *MMG_Photon() const;
-
+        // backward-compatibility methods
+        const flashgg::DiMuonCandidate *MMG_DiMu() const { return dimuon(); }
+        const flashgg::Photon *MMG_Photon() const { return photon(); }
         edm::Ptr<flashgg::DiMuonCandidate> DiMuPtr() const { return dimuptr_; }
+        edm::Ptr<reco::Vertex> VertexPtr() const { return vertex_; }
+        //
+
+        const flashgg::Photon* photon() const { return dynamic_cast<const flashgg::Photon*>( daughter( 1 ) ); }
+
+        const flashgg::DiMuonCandidate* dimuon() const { return dimuptr_.get(); }
         void setDiMuPtr( edm::Ptr<flashgg::DiMuonCandidate> val ) { dimuptr_ = val; }
 
-        edm::Ptr<reco::Vertex> Vertex() const { return vertex_; }
-        void setVertex( edm::Ptr<reco::Vertex> val ) { vertex_ = val; }
+        const reco::Vertex* vtx() const { return vertex_.get(); }
+        bool hasMatchedDiLeptonPhotonVertex() const { return matchedVertex_; }
+        void setVertex( edm::Ptr<reco::Vertex> val, bool matched=false ) { vertex_ = val; matchedVertex_ = matched; }
 
         bool Is2012FSRZMMG() const { return Is2012FSRZMMG_; }
         void setIs2012FSRZMMG( bool val ) { Is2012FSRZMMG_  = val;}
@@ -44,11 +51,11 @@ namespace flashgg {
         double PhotonTrkIsoHollow03MuCorr() const { return PhotonTrkIsoHollow03MuCorr_; }
         void setPhotonTrkIsoHollow03MuCorr( double val ) { PhotonTrkIsoHollow03MuCorr_  = val;}
 
-
     private:
 
         edm::Ptr<flashgg::DiMuonCandidate> dimuptr_;
         edm::Ptr<reco::Vertex> vertex_;
+        bool matchedVertex_;
         bool Is2012FSRZMMG_;
         bool IsHGammaStarGamma_;
         bool IsHZgamma_;

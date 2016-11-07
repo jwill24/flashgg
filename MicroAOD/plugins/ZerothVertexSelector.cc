@@ -37,6 +37,17 @@ namespace flashgg {
                                       //  const float&                                                                                                                                             
                                       ) override;
 
+        edm::Ptr<reco::Vertex> select( const edm::Ptr<flashgg::Photon> &, const edm::Ptr<reco::CompositeCandidate> &,
+                                      const std::vector<edm::Ptr<reco::Vertex> > &,
+                                      const VertexCandidateMap &,
+                                      const std::vector<edm::Ptr<reco::Conversion> > &,
+                                      const std::vector<edm::Ptr<reco::Conversion> > &,
+                                      const math::XYZPoint &,
+                                       bool
+                                      //  const Parameters_Selector_Type&,                                                                                                                         
+                                      //  const float&                                                                                                                                             
+                                      ) override;
+
         void writeInfoFromLastSelectionTo( flashgg::DiPhotonCandidate & ) override;
         void writeInfoFromLastSelectionTo( flashgg::PhotonJetCandidate & ) override;
 
@@ -62,6 +73,21 @@ namespace flashgg {
 
     edm::Ptr<reco::Vertex> ZerothVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1,
             const edm::Ptr<pat::Jet> &g2,
+            const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
+            const VertexCandidateMap &vertexCandidateMap,
+            const std::vector<edm::Ptr<reco::Conversion> > &convs,
+            const std::vector<edm::Ptr<reco::Conversion> > &convsSingleLeg,
+            const math::XYZPoint &beamSpot,
+            bool
+            //						      const Parameters_Selector_Type& param,
+            //                                                      const float& beamsig
+                                                       )
+    {
+        return vtxs[_whichVertex];
+    }
+
+    edm::Ptr<reco::Vertex> ZerothVertexSelector::select( const edm::Ptr<flashgg::Photon> &g1,
+            const edm::Ptr<reco::CompositeCandidate> &g2,
             const std::vector<edm::Ptr<reco::Vertex> > &vtxs,
             const VertexCandidateMap &vertexCandidateMap,
             const std::vector<edm::Ptr<reco::Conversion> > &convs,

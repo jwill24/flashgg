@@ -4,6 +4,7 @@
 #include "DataFormats/Candidate/interface/CompositeCandidate.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "TMath.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
 
@@ -14,10 +15,19 @@ namespace flashgg {
         DiMuonCandidate();
         DiMuonCandidate( edm::Ptr<pat::Muon>, edm::Ptr<pat::Muon> );
         DiMuonCandidate( const pat::Muon &, const pat::Muon & );
+        DiMuonCandidate( edm::Ptr<pat::Muon>, edm::Ptr<pat::Muon>, edm::Ptr<reco::Vertex> );
         ~DiMuonCandidate();
 
         const pat::Muon *leadingMuon() const;
         const pat::Muon *subleadingMuon() const;
+        const reco::Vertex* vtx() const { return vertex_.get(); }
+        edm::Ptr<reco::Vertex> VertexPtr() const { return vertex_; }
+
+        void setVertex( edm::Ptr<reco::Vertex> vtx ) {
+            vertex_ = vtx;
+            reco::CompositeCandidate::setVertex( vtx->position() );
+         }
+        float deltaPhi() const;
 
         bool IsOSDiMuPair() const { return IsOSDiMuPair_; }
         void setIsOSDiMuPair( bool val ) { IsOSDiMuPair_ = val;}
@@ -30,6 +40,7 @@ namespace flashgg {
 
     private:
 
+        edm::Ptr<reco::Vertex> vertex_;
         bool IsOSDiMuPair_;
         bool IfBothTightMu_;
         bool IfBothGlobalAndPF_;

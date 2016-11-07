@@ -9,6 +9,7 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "flashgg/DataFormats/interface/MuMuGammaCandidate.h"
 #include "flashgg/MicroAOD/interface/PhotonIdUtils.h"
+#include "flashgg/MicroAOD/interface/VertexSelectorBase.h"
 
 //-----------J. Tao from IHEP-Beijing--------------
 
@@ -27,18 +28,37 @@ namespace flashgg {
         EDGetTokenT<View<flashgg::DiMuonCandidate> > dimuToken_;
         EDGetTokenT<View<flashgg::Photon> > photonToken_;
         EDGetTokenT<View<reco::Vertex> > vertexToken_;
+        EDGetTokenT<VertexCandidateMap> vertexCandidateMapToken_;
+        EDGetTokenT<reco::BeamSpot> beamSpotToken_;
+        EDGetTokenT<View<reco::Conversion> > conversionToken_;
+        EDGetTokenT<View<reco::Conversion> > conversionTokenSingleLeg_;
+        unique_ptr<VertexSelectorBase> vertexSelector_;
 
         double minPhotonPT_;
         //double maxPhotonEta_;
+        bool matchVertex_;
+        bool useSingleLeg_;
 
     };
 
     MuMuGammaProducer::MuMuGammaProducer( const ParameterSet &iConfig ) :
         dimuToken_( consumes<View<flashgg::DiMuonCandidate> >( iConfig.getParameter<InputTag> ( "DiMuonTag" ) ) ),
         photonToken_( consumes<View<flashgg::Photon> >( iConfig.getParameter<InputTag> ( "PhotonTag" ) ) ),
-        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) )
+        vertexToken_( consumes<View<reco::Vertex> >( iConfig.getParameter<InputTag> ( "VertexTag" ) ) ),
+        vertexCandidateMapToken_( consumes<VertexCandidateMap>( iConfig.getParameter<InputTag>( "VertexCandidateMapTag" ) ) ),
+        beamSpotToken_( consumes<reco::BeamSpot >( iConfig.getParameter<InputTag>( "beamSpotTag" ) ) ),
+        conversionToken_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTag" ) ) ),
+        conversionTokenSingleLeg_( consumes<View<reco::Conversion> >( iConfig.getParameter<InputTag>( "ConversionTagSingleLeg" ) ) )
     {
         minPhotonPT_ = iConfig.getParameter<double>( "minPhotonPT" );
+
+        matchVertex_ = iConfig.getParameter<bool>( "matchVertex" );
+        if ( matchVertex_ ) {
+            const std::string &VertexSelectorName = iConfig.getParameter<std::string>( "VertexSelectorName" );
+            vertexSelector_.reset( FlashggVertexSelectorFactory::get()->create( VertexSelectorName, iConfig ) );
+            useSingleLeg_ = iConfig.getParameter<bool>( "useSingleLeg" );
+        }
+
         produces<vector<flashgg::MuMuGammaCandidate> >();
     }
 
@@ -61,6 +81,18 @@ namespace flashgg {
         //const PtrVector<flashgg::Photon>& photonPointers = photons->ptrVector();
         const std::vector<edm::Ptr<flashgg::Photon> > &photonPointers = photons->ptrs();
 
+        Handle<VertexCandidateMap> vertexCandidateMap;
+        Handle<View<reco::Conversion> > conversions, conversionsSingleLeg;
+        Handle<reco::BeamSpot> recoBeamSpotHandle;
+        math::XYZPoint vertexPoint;
+
+        if ( matchVertex_ ) {
+            evt.getByToken( vertexCandidateMapToken_, vertexCandidateMap );
+            evt.getByToken( conversionToken_, conversions );
+            evt.getByToken( conversionTokenSingleLeg_, conversionsSingleLeg );
+            evt.getByToken( beamSpotToken_, recoBeamSpotHandle );
+            if ( recoBeamSpotHandle.isValid() ) { vertexPoint = recoBeamSpotHandle->position(); }
+        }
 
         auto_ptr<vector<flashgg::MuMuGammaCandidate> > MuMuGammaColl( new vector<flashgg::MuMuGammaCandidate> );
         //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tdimuonPointers.size()= " << dimuonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
@@ -68,6 +100,9 @@ namespace flashgg {
         for( unsigned int i = 0 ; i < dimuonPointers.size() ; i++ ) {
             Ptr<flashgg::DiMuonCandidate> dimuon = dimuonPointers[i];
             //flashgg::DiMuonCandidate dimu = flashgg::DiMuonCandidate(*dimuon);
+            if ( dimuon->vtx()->isValid() ) {
+                pvx = dimuon->VertexPtr();
+            }
             for( unsigned int j = 0; j < photonPointers.size() ; j++ ) {
                 Ptr<flashgg::Photon> photon = photonPointers[j];
                 // A number of things need to be done once the vertex is chosen
@@ -79,9 +114,22 @@ namespace flashgg {
                 float PhotonET =  photon_corr.pt();
                 if( PhotonET < minPhotonPT_ ) { continue; }
 
-                //MuMuGammaCandidate mumugamma(dimu, photon_corr);
                 MuMuGammaCandidate mumugamma( dimuon, photon_corr, pvx );
-                mumugamma.setVertex( pvx );
+                if ( pvx->isValid() ) mumugamma.setVertex( pvx, false );
+
+                if ( matchVertex_ ) {
+                    Ptr<reco::Vertex> pvx = vertexSelector_->select( photon, dimuon, primaryVertices->ptrs(), *vertexCandidateMap, conversions->ptrs(), conversionsSingleLeg->ptrs(), vertexPoint, useSingleLeg_ );
+                    // Finding and storing the vertex index to check if it corresponds to the primary vertex.
+                    // This could be moved within the vertexSelector, but would need rewriting some interface
+                    for( unsigned int k = 0; k < primaryVertices->size() ; k++ ) {
+                        if( pvx == primaryVertices->ptrAt( k ) ) {
+                            std::cerr << "found a dilepton+photon vertex!!!!!!" << std::endl;
+                            mumugamma.setVertex( pvx, true );
+                            break;
+                        }
+                    }
+                }
+
                 //====================
                 bool passFSRZmmg2012 = 0;
                 const pat::Muon *muon_lead = dimuon->leadingMuon();

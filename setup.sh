@@ -129,6 +129,11 @@ git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_20
 echo "Setting up Higgs Simplified Template Cross Sections..."
 git cms-merge-topic -u sethzenz:rivet_hepmc
 
+echo "Setting up forward proton reconstruction..."
+#git cms-merge-topic forthommel:forward-proton-reco_80X
+git cms-addpkg DataFormats/CTPPSReco
+git cms-addpkg RecoCTPPS/ProtonProducer
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg

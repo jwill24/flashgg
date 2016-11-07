@@ -25,6 +25,7 @@
 
     "Run2016B-PromptReco"    : ["80X_dataRun2_Prompt_v8"],
     "Run2016C-PromptReco"    : ["80X_dataRun2_Prompt_v9"],
+    "lforthom-miniAOD_pps_run2016C_v2-d65030a9bb77c683d1cd335d98b0c92" : ["80X_dataRun2_Prompt_v9"],
     "Run2016D-PromptReco"    : ["80X_dataRun2_Prompt_v9"],
     "Run2016E-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
     "Run2016F-PromptReco"    : ["80X_dataRun2_Prompt_v10"],
