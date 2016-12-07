@@ -130,7 +130,7 @@ echo "Setting up Higgs Simplified Template Cross Sections..."
 git cms-merge-topic -u sethzenz:rivet_hepmc
 
 echo "Setting up forward proton reconstruction..."
-git cms-merge-topic forthommel:forward-proton-reco_80X
+#git cms-merge-topic forthommel:forward-proton-reco_80X
 git cms-addpkg DataFormats/CTPPSReco
 git cms-addpkg RecoCTPPS/ProtonProducer
 
