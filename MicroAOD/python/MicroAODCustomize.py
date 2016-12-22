@@ -39,6 +39,16 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                               VarParsing.VarParsing.varType.int,          # string, int, or float
                               "muMuGamma")
+        self.options.register('forwardProtons',
+                              0, # 0 never, 1 always
+                              VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                              VarParsing.VarParsing.varType.int,          # string, int, or float
+                              "forwardProtons")
+        self.options.register('ZGamma',
+                              '', # default value
+                              VarParsing.VarParsing.multiplicity.list, # singleton or list
+                              VarParsing.VarParsing.varType.string,          # string, int, or float
+                              "ZGamma")
         self.options.register ('globalTag',
                                "", # default value
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
@@ -129,6 +139,10 @@ class MicroAODCustomize(object):
             self.customizeMuMuGamma(process)
         elif self.muMuGamma == 2 and ("DY" in customize.datasetName or "DoubleMuon" in customize.datasetName):
             self.customizeMuMuGamma(process)
+        if self.forwardProtons == 1:
+            self.customizeDiProton(process)
+        if len(self.ZGamma) >0:
+            self.customizeZGamma(process, self.ZGamma)
         if "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8" in customize.datasetName:
             self.customizePDFs(process)
         if len(self.globalTag) >0:
@@ -294,10 +308,36 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggMicroAODOutputCommands_cff import microAODHLTOutputCommand
         process.out.outputCommands += microAODHLTOutputCommand # extra items for HLT efficiency
 
-    def customizeMuMuGamma(self,process):
+    def customizeMuMuGamma(self,process,matchVtx):
         process.load("flashgg/MicroAOD/flashggDiMuons_cfi")
         process.load("flashgg/MicroAOD/flashggMuMuGamma_cfi")
+        if matchVtx:
+            process.flashggDiMuons.matchVertex = cms.bool(True)
+            process.flashggMuMuGamma.matchVertex = cms.bool(True)
         process.p *= process.flashggDiMuons*process.flashggMuMuGamma
+
+    def customizeDiProton(self,process):
+        process.load('RecoCTPPS.Configuration.recoCTPPS_cff')
+        process.load('flashgg/MicroAOD/flashggProtons_cfi')
+        process.load('flashgg/MicroAOD/flashggDiProtons_cfi')
+        process.load('flashgg/MicroAOD/flashggDiProtonsDiPhotons_cfi')
+        #process.flashggProtons.useXiInterpolation = cms.bool(False) #FIXME for debugging purposes
+        process.p *= process.protonProducer
+        process.p *= process.flashggProtons*process.flashggDiProtons*process.flashggDiProtonsDiPhotons
+
+    def customizeZGamma(self,process,proc_types):
+        print '### Zgamma objects producer switched on. Enabled Z decay modes:',proc_types
+        if 'mu' in proc_types: # Z -> dimuon
+            self.customizeMuMuGamma(process, True)
+        if 'ele' in proc_types: # Z -> dielectron
+            process.load('flashgg/MicroAOD/flashggDiElectrons_cfi')
+            process.load('flashgg/MicroAOD/flashggEEGamma_cfi')
+            process.flashggDiElectrons.matchVertex = cms.bool(True)
+            process.p *= process.flashggDiElectrons*process.flashggEEGamma
+        if 'jet' in proc_types: # Z -> dijet
+            print('## Dijet final state highly experimental...')
+            process.load('flashgg/MicroAOD/flashggDiJets_cfi')
+            process.p *= process.flashggDiJets
 
     def customizeTTH(self,process):
         process.load("flashgg/MicroAOD/ttHGGFilter_cfi")

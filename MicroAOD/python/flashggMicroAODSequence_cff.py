@@ -44,3 +44,4 @@ flashggMicroAODSequence = cms.Sequence(eventCount+weightsCount
                                        +flashggVertexMapForPUPPI*flashggFinalPuppiJets
                                        +flashggMets
                                        )
+

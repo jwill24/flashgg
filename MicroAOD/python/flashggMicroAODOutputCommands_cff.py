@@ -29,8 +29,13 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_flashggSelected*_*_*",
                                                      # Drop intermediate collections in favor of selected/final collections
                                                      "drop *_flashgg*Jet*_*_*",
-                                                     "drop *_flashggMuons_*_*",
-                                                     "drop *_flashggElectrons_*_*",
+#                                                     "drop *_flashggMuons_*_*",
+#                                                     "drop *_flashggElectrons_*_*",
+                                                     "keep *_flashggMuons_*_*",
+                                                     "keep *_flashggElectrons_*_*",
+
+                                                     "keep *_totemRPRecHitProducer_*_*",
+                                                     "keep *_totemRPLocalTrackFitter_*_*",
 
                                                      "keep *_flashggFinalJets_*_*",
                                                      "keep *_flashggFinalPuppiJets_*_*",

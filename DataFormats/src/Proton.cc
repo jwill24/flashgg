@@ -2,13 +2,14 @@
 
 using namespace flashgg;
 
-Proton::Proton() : TotemRPLocalTrack()
+Proton::Proton()
+{}
+
+Proton::Proton( const reco::Proton& prot ) :
+    reco::Proton( prot )
 {}
 
 Proton::~Proton()
-{}
-
-Proton::Proton( const TotemRPLocalTrack &aproton ) : TotemRPLocalTrack( aproton )
 {}
 
 // Local Variables:

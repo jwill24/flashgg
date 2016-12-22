@@ -28,6 +28,8 @@ namespace flashgg {
 
         double minMuPT_;
         double maxMuEta_;
+        bool matchVertex_;
+        double matchVertexMaxDist2_;
 
     };
 
@@ -37,6 +39,8 @@ namespace flashgg {
     {
         minMuPT_ = iConfig.getParameter<double>( "minMuonPT" );
         maxMuEta_ = iConfig.getParameter<double>( "maxMuonEta" );
+        matchVertex_ = iConfig.getParameter<bool>( "matchVertex" );
+        matchVertexMaxDist2_ = pow( iConfig.getParameter<double>( "maxVertexDist" ), 2 );
         produces<vector<flashgg::DiMuonCandidate> >();
     }
 
@@ -76,6 +80,40 @@ namespace flashgg {
                 }
 
                 DiMuonCandidate dimu( LeadMuon, SubLeadMuon );
+
+                bool leadmuIsTight = false, subleadmuIsTight = false;
+                if ( matchVertex_ ) {
+                    reco::Vertex::Point lVtx = LeadMuon->vertex(), slVtx = SubLeadMuon->vertex();
+                    // First check if both the leptons' vertices are compatible with one single vertex
+                    if ( ( lVtx-slVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }
+
+                    // Then find the associated vertex object in the collection (shortest distance approach)
+                    int vtx_id = -1;
+                    float vtx_dist = 999.;
+                    for ( unsigned int k = 0 ; k < primaryVertices->size() ; k++ ) {
+                        Ptr<reco::Vertex> vtx = primaryVertices->ptrAt( k );
+                        float dist = sqrt( ( vtx->position()-lVtx ).Mag2() ); //FIXME compute wrt leading lepton's vertex or mean?
+                        /*if ( ( vtx->position()-lVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }
+                        if ( ( vtx->position()-slVtx ).Mag2() > matchVertexMaxDist2_ ) { continue; }*/
+                        if ( dist<vtx_dist ) {
+cout << "vertex candidate found for the dimuon vertex!!!!!" << endl;
+                            vtx_id = k;
+                            vtx_dist = dist;
+                        }
+                    }
+                    if ( vtx_id<0 ) { continue; }
+
+                    Ptr<reco::Vertex> vtx = primaryVertices->ptrAt( vtx_id );
+                    dimu.setVertex( vtx );
+                    leadmuIsTight  = LeadMuon->isTightMuon( *vtx );
+                    subleadmuIsTight  = SubLeadMuon->isTightMuon( *vtx );
+                }
+                else {
+                    leadmuIsTight  = LeadMuon->isTightMuon( myrecovtx );
+                    subleadmuIsTight  = SubLeadMuon->isTightMuon( myrecovtx );
+                }
+
+
                 int mu1_charge = muon1->charge();
                 int mu2_charge = muon2->charge();
 
@@ -83,8 +121,6 @@ namespace flashgg {
                 if( mu1_charge * mu2_charge < 0 ) { IsOPCharge = true; }
                 dimu.setIsOSDiMuPair( IsOPCharge );
 
-                bool leadmuIsTight  = LeadMuon->isTightMuon( myrecovtx );
-                bool subleadmuIsTight  = SubLeadMuon->isTightMuon( myrecovtx );
                 bool bothTightMu = false;
                 if( leadmuIsTight && subleadmuIsTight ) { bothTightMu = true; }
                 dimu.setIfBothTightMu( bothTightMu );

@@ -1,17 +1,19 @@
 #ifndef FLASHgg_Proton_h
 #define FLASHgg_Proton_h
 
-#include "DataFormats/CTPPSReco/interface/TotemRPLocalTrack.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/CTPPSReco/interface/Proton.h"
+
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 
 namespace flashgg {
 
-    class Proton : public TotemRPLocalTrack, public WeightedObject
+    class Proton : public WeightedObject, public reco::Proton
     {
 
     public:
         Proton();
-        Proton( const TotemRPLocalTrack & );
+        Proton( const reco::Proton& );
         ~Proton();
 
         Proton *clone() const { return ( new Proton( *this ) ); }

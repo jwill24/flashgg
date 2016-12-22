@@ -11,6 +11,8 @@ typedef edm::AnalyzerWrapper<flashgg::CutBasedDiPhotonDumper> CutBasedDiPhotonDu
 typedef edm::AnalyzerWrapper<flashgg::CutBasedSinglePhotonViewDumper> CutBasedSinglePhotonViewDumper;
 typedef edm::AnalyzerWrapper<flashgg::CutBasedSingleVertexViewDumper> CutBasedSingleVertexViewDumper;
 typedef edm::AnalyzerWrapper<flashgg::DiPhotonTagDumper> DiPhotonTagDumper;
+typedef edm::AnalyzerWrapper<flashgg::DiProtonDiPhotonDumper> DiProtonDiPhotonDumper;
+typedef edm::AnalyzerWrapper<flashgg::CutBasedDiProtonDiPhotonDumper> CutBasedDiProtonDiPhotonDumper;
 
 DEFINE_FWK_MODULE( GenDiPhotonDumper );
 DEFINE_FWK_MODULE( CutBasedGenDiPhotonDumper );
@@ -21,6 +23,8 @@ DEFINE_FWK_MODULE( CutBasedDiPhotonDumper );
 DEFINE_FWK_MODULE( CutBasedSinglePhotonViewDumper );
 DEFINE_FWK_MODULE( CutBasedSingleVertexViewDumper );
 DEFINE_FWK_MODULE( DiPhotonTagDumper );
+DEFINE_FWK_MODULE( DiProtonDiPhotonDumper );
+DEFINE_FWK_MODULE( CutBasedDiProtonDiPhotonDumper );
 
 // Local Variables:
 // mode:c++

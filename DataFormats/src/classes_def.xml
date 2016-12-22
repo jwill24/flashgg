@@ -151,7 +151,6 @@
 <class name="edm::Wrapper<std::vector<flashgg::VHHadronicTag> >"/>
 <class name="edm::Ptr<flashgg::DiPhotonTagBase>"/>
 <class name="edm::Wrapper<edm::Ptr<flashgg::DiPhotonTagBase> >"/>
-<class name="edm::Ptr<reco::Vertex>"/> 
 <class name="std::vector<edm::Ptr<reco::Vertex> >"/> 
 <class name="flashgg::Photon" ClassVersion="10">
   <version ClassVersion="10" checksum="563539605"/>
@@ -227,7 +226,7 @@
 <class name="std::pair<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="std::map<edm::Ptr<reco::Vertex>,flashgg::MinimalPileupJetIdentifier>"/>
 <class name="flashgg::Jet" ClassVersion="13">
- <version ClassVersion="13" checksum="2175929989"/>
+  <version ClassVersion="13" checksum="2175929989"/>
   <version ClassVersion="12" checksum="1532368094"/>
   <version ClassVersion="11" checksum="3459570589"/>
   <version ClassVersion="10" checksum="2045570510"/>
@@ -299,8 +298,9 @@
 <class name="std::vector<edm::Ptr<pat::MET> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<pat::MET> > >"/>
 
-<class name="flashgg::DiMuonCandidate" ClassVersion="10">
-  <version ClassVersion="10" checksum="1852293607"/>
+<class name="flashgg::DiMuonCandidate" ClassVersion="11">
+   <version ClassVersion="11" checksum="1799482127"/>
+   <version ClassVersion="10" checksum="1852293607"/>
 </class>
 <class name="std::vector<flashgg::DiMuonCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiMuonCandidate> >"/>
@@ -309,8 +309,29 @@
 <class name="std::vector<edm::Ptr<flashgg::DiMuonCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiMuonCandidate> > >"/>
 
-<class name="flashgg::MuMuGammaCandidate" ClassVersion="10">
-  <version ClassVersion="10" checksum="1087604778"/>
+<class name="flashgg::DiElectronCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="3164183840"/>
+</class>
+<class name="std::vector<flashgg::DiElectronCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiElectronCandidate> >"/>
+<class name="edm::Ptr<flashgg::DiElectronCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiElectronCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::DiElectronCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiElectronCandidate> > >"/>
+
+<class name="flashgg::DiJetCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="2811607325"/>
+</class>
+<class name="std::vector<flashgg::DiJetCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiJetCandidate> >"/>
+<class name="edm::Ptr<flashgg::DiJetCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::DiJetCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::DiJetCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::DiJetCandidate> > >"/>
+
+<class name="flashgg::MuMuGammaCandidate" ClassVersion="11">
+   <version ClassVersion="11" checksum="1031923807"/>
+   <version ClassVersion="10" checksum="1087604778"/>
 </class>
 <class name="std::vector<flashgg::MuMuGammaCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::MuMuGammaCandidate> >"/>
@@ -318,6 +339,16 @@
 <class name="edm::Wrapper<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> >"/>
 <class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::MuMuGammaCandidate> > >"/>
+
+<class name="flashgg::EEGammaCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="1330068680"/>
+</class>
+<class name="std::vector<flashgg::EEGammaCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::EEGammaCandidate> >"/>
+<class name="edm::Ptr<flashgg::EEGammaCandidate>"/>
+<class name="edm::Wrapper<edm::Ptr<flashgg::EEGammaCandidate> >"/>
+<class name="std::vector<edm::Ptr<flashgg::EEGammaCandidate> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::EEGammaCandidate> > >"/>
 
 <class name="flashgg::PhotonJetCandidate" ClassVersion="11">
   <version ClassVersion="11" checksum="4247679146"/>
@@ -333,4 +364,30 @@
 </class>
 <class name="std::vector<flashgg::TagCandidate>"/>
 <class name="edm::Wrapper<std::vector<flashgg::TagCandidate> >"/>
+
+<class name="flashgg::Proton" ClassVersion="10">
+   <version ClassVersion="10" checksum="1851033428"/>
+</class>
+<class name="edm::Ptr<flashgg::Proton>"/>
+<class name="std::vector<flashgg::Proton>"/>
+<class name="edm::Wrapper<std::vector<flashgg::Proton> >"/>
+<class name="std::vector<edm::Ptr<flashgg::Proton> >"/>
+<class name="edm::Wrapper<std::vector<edm::Ptr<flashgg::Proton> > >"/>
+
+<class name="flashgg::DiProtonCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="1370643334"/>
+</class>
+<class name="std::vector<flashgg::DiProtonCandidate>"/>
+<class name="edm::Ptr<flashgg::DiProtonCandidate>"/>
+<class name="edm::Wrapper<flashgg::DiProtonCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiProtonCandidate> >"/>
+
+<class name="flashgg::DiProtonDiPhotonCandidate" ClassVersion="10">
+   <version ClassVersion="10" checksum="1666031416"/>
+</class>
+<class name="std::vector<flashgg::DiProtonDiPhotonCandidate>"/>
+<class name="edm::Ptr<flashgg::DiProtonDiPhotonCandidate>"/>
+<class name="edm::Wrapper<flashgg::DiProtonDiPhotonCandidate>"/>
+<class name="edm::Wrapper<std::vector<flashgg::DiProtonDiPhotonCandidate> >"/>
+
 </lcgdict>

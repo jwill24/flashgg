@@ -134,6 +134,11 @@ echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
 git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_20
 
+echo "Setting up forward proton reconstruction..."
+git cms-merge-topic forthommel:forward-proton-reco_81X
+git cms-addpkg DataFormats/CTPPSReco
+git cms-addpkg RecoCTPPS/ProtonProducer
+
 echo "copy databases for local running (consistency with crab)"
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Fall15_25nsV2_*.db $CMSSW_BASE/src/flashgg
 cp $CMSSW_BASE/src/flashgg/MicroAOD/data/Spring16_25nsV3*.db $CMSSW_BASE/src/flashgg
