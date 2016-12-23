@@ -56,7 +56,7 @@ namespace flashgg {
         }
 
         for( unsigned int i = 0 ; i < nCollections_ ; i++ ) {
-            auto_ptr<vector<Jet> > result( new vector<Jet> );
+            unique_ptr<vector<Jet> > result( new vector<Jet> );
             if( theJets->size() > i ) {
                 for( unsigned int j = 0 ; j < theJets->at( i ).size() ; j++ ) {
                     result->push_back( theJets->at( i )[j] );
@@ -64,7 +64,7 @@ namespace flashgg {
             }
             char number[2];
             sprintf( number, "%u", i );
-            evt.put( result, number );
+            evt.put( move( result ), number );
         }
     }
 }

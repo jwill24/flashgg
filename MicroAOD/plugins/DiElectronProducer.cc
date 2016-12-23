@@ -58,7 +58,7 @@ namespace flashgg {
         const std::vector<edm::Ptr<pat::Electron> > &electronPointers = electrons->ptrs();
 
 
-        auto_ptr<vector<flashgg::DiElectronCandidate> > diElectronColl( new vector<flashgg::DiElectronCandidate> );
+        unique_ptr<vector<flashgg::DiElectronCandidate> > diElectronColl( new vector<flashgg::DiElectronCandidate> );
         //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\telectronPointers.size()= " << electronPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
         for( unsigned int i = 0 ; i < electronPointers.size() ; i++ ) {
@@ -111,7 +111,7 @@ namespace flashgg {
                 diElectronColl->push_back( diele );
             }
         }
-        evt.put( diElectronColl );
+        evt.put( move( diElectronColl ) );
 
     }
 }

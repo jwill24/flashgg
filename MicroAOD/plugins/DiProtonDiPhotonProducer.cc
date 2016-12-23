@@ -42,7 +42,7 @@ namespace flashgg {
         Handle<View<flashgg::DiPhotonCandidate> > diph;
         evt.getByToken( diphotonToken_, diph );
 
-        auto_ptr<vector<DiProtonDiPhotonCandidate> > diProtonPhotonColl( new vector<DiProtonDiPhotonCandidate> );
+        std::unique_ptr<vector<DiProtonDiPhotonCandidate> > diProtonPhotonColl( new vector<DiProtonDiPhotonCandidate> );
 
         for( unsigned int i = 0 ; i < dipr->size() ; i++ ) {
             Ptr<flashgg::DiProtonCandidate> dpr = dipr->ptrAt( i );
@@ -59,7 +59,7 @@ namespace flashgg {
         // Sort the final collection (descending) and put it in the event
         std::sort( diProtonPhotonColl->begin(), diProtonPhotonColl->end(), greater<DiProtonDiPhotonCandidate>() );
 
-        evt.put( diProtonPhotonColl );
+        evt.put( std::move( diProtonPhotonColl ) );
     }
 }
 

@@ -58,7 +58,7 @@ namespace flashgg {
         const std::vector<edm::Ptr<pat::Muon> > &muonPointers = muons->ptrs();
 
 
-        auto_ptr<vector<flashgg::DiMuonCandidate> > diMuonColl( new vector<flashgg::DiMuonCandidate> );
+        unique_ptr<vector<flashgg::DiMuonCandidate> > diMuonColl( new vector<flashgg::DiMuonCandidate> );
         //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tmuonPointers.size()= " << muonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
         for( unsigned int i = 0 ; i < muonPointers.size() ; i++ ) {
@@ -133,7 +133,7 @@ cout << "vertex candidate found for the dimuon vertex!!!!!" << endl;
                 diMuonColl->push_back( dimu );
             }
         }
-        evt.put( diMuonColl );
+        evt.put( std::move( diMuonColl ) );
 
     }
 }

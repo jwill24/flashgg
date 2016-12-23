@@ -184,8 +184,8 @@ namespace flashgg {
 
         Handle<View<reco::GenParticle> > genParticles;
 
-        std::auto_ptr<vector<VHLeptonicLooseTag> > VHLeptonicLooseTags( new vector<VHLeptonicLooseTag> );
-        std::auto_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
+        std::unique_ptr<vector<VHLeptonicLooseTag> > VHLeptonicLooseTags( new vector<VHLeptonicLooseTag> );
+        std::unique_ptr<vector<VHTagTruth> > truths( new vector<VHTagTruth> );
 
         Point higgsVtx;
         bool associatedZ=0;
@@ -418,8 +418,8 @@ namespace flashgg {
                 }
             }
         }
-        evt.put( VHLeptonicLooseTags );
-        evt.put( truths );
+        evt.put( std::move( VHLeptonicLooseTags ) );
+        evt.put( std::move( truths ) );
     }
 
 }
