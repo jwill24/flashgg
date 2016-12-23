@@ -94,7 +94,7 @@ namespace flashgg {
             if ( recoBeamSpotHandle.isValid() ) { vertexPoint = recoBeamSpotHandle->position(); }
         }
 
-        auto_ptr<vector<flashgg::MuMuGammaCandidate> > MuMuGammaColl( new vector<flashgg::MuMuGammaCandidate> );
+        unique_ptr<vector<flashgg::MuMuGammaCandidate> > MuMuGammaColl( new vector<flashgg::MuMuGammaCandidate> );
         //    cout << "evt.id().event()= " << evt.id().event() << "\tevt.isRealData()= " << evt.isRealData() << "\tdimuonPointers.size()= " << dimuonPointers.size() << "\tpvPointers.size()= " << pvPointers.size() << endl;
 
         for( unsigned int i = 0 ; i < dimuonPointers.size() ; i++ ) {
@@ -188,7 +188,7 @@ namespace flashgg {
                 MuMuGammaColl->push_back( mumugamma );
             }
         }
-        evt.put( MuMuGammaColl );
+        evt.put( move( MuMuGammaColl ) );
 
     }
 }

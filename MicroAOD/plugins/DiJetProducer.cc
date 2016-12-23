@@ -44,7 +44,7 @@ namespace flashgg {
         Handle<View<pat::Jet> > jets;
         evt.getByToken( jetToken_, jets );
 
-        auto_ptr<vector<DiJetCandidate> > diJetColl( new vector<DiJetCandidate> );
+        unique_ptr<vector<DiJetCandidate> > diJetColl( new vector<DiJetCandidate> );
 
         for( unsigned int i = 0 ; i < jets->size() ; i++ ) {
 
@@ -79,7 +79,7 @@ namespace flashgg {
         // Sort the final collection (descending) and put it in the event
         std::sort( diJetColl->begin(), diJetColl->end(), greater<DiJetCandidate>() );
 
-        evt.put( diJetColl );
+        evt.put( std::move( diJetColl ) );
     }
 }
 

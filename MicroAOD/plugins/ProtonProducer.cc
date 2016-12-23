@@ -47,14 +47,14 @@ namespace flashgg {
         Handle<vector<reco::Proton> >  protons;
         evt.getByToken( protonsToken_, protons );
 
-        std::auto_ptr<vector<flashgg::Proton> > protonColl( new vector<flashgg::Proton> );
+        std::unique_ptr<vector<flashgg::Proton> > protonColl( new vector<flashgg::Proton> );
 
         for ( vector<reco::Proton>::const_iterator p = protons->begin(); p < protons->end(); p++ ) {
             if (!p->isValid()) continue;
             protonColl->push_back( flashgg::Proton( *p ) );
         }
 
-        evt.put( protonColl );
+        evt.put( std::move( protonColl ) );
     }
 }
 

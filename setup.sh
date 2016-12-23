@@ -106,10 +106,11 @@ cd $CMSSW_BASE/src
 
 echo "Setting up QGL..."
 git cms-addpkg RecoJets/JetProducers
-git cms-merge-topic -u sethzenz:for-flashgg-QGL-vertexIndex-8_0_20
+git cms-merge-topic -u forthommel:for-flashgg-QGL-vertexIndex-8_1_0
 
 echo "grabbing MET topic updates..."
-git cms-merge-topic cms-met:METRecipe_8020
+#git cms-merge-topic cms-met:METRecipe_8020 # merged for 8_0_X ; not for 8_1_X
+git cms-merge-topic -u forthommel:for-flashgg-METRecipe-8_1_0
 
 # NO LONGER NEEDED BECAUSE THE BRANCH ABOVE WAS UPDATED (TBC)
 #echo "Cherry-pick for MET JES, including adding and removing met repo"
@@ -119,20 +120,20 @@ git cms-merge-topic cms-met:METRecipe_8020
 #git remote remove metCMS
 
 echo "Setting up MET filters..."
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate
+git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate # OK for 8_1_X
 
 echo "Setting up TnP tools..."
-git cms-merge-topic -u sethzenz:for-flashgg-egm_tnp-8_0_20
+git cms-merge-topic -u forthommel:for-flashgg-egm_tnp-8_1_0
 
 echo "Setting up misc egm and weight stuff..."
-git cms-merge-topic -u sethzenz:for-flashgg-smearer-conv-weights-8_0_20
+git cms-merge-topic -u forthommel:for-flashgg-smearer-conv-weights-8_1_0 # warning: built on top of the TnP patch...
 
 echo "Setting up Higgs Simplified Template Cross Sections..."
-git cms-merge-topic -u sethzenz:rivet_hepmc
+git cms-merge-topic -u forthommel:rivet_hepmc-8_1_0
 
 echo "Tweaking ConfigToolBase.py to avoid assuming soft link path..."
 git cms-addpkg FWCore/GuiBrowsers
-git cms-merge-topic -u sethzenz:for-flashgg-toolbase-8_0_20
+git cms-merge-topic -u forthommel:for-flashgg-toolbase-8_1_0
 
 echo "Setting up forward proton reconstruction..."
 git cms-merge-topic forthommel:forward-proton-reco_81X

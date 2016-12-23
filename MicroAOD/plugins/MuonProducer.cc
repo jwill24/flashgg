@@ -66,7 +66,7 @@ namespace flashgg {
 
         //        std::cout << "calling produce function " << std::endl;
 
-        std::auto_ptr<vector<flashgg::Muon> > muColl( new vector<flashgg::Muon> );
+        std::unique_ptr<vector<flashgg::Muon> > muColl( new vector<flashgg::Muon> );
 
         for( unsigned int muIndex = 0; muIndex < pmuons->size(); muIndex++ ) {
             Ptr<pat::Muon> pmu = pmuons->ptrAt( muIndex );//retain the same index as patMuon;
@@ -126,7 +126,7 @@ namespace flashgg {
             
             muColl->push_back( fmu );
         }
-        evt.put( muColl );
+        evt.put( std::move( muColl ) );
     }
 }
 

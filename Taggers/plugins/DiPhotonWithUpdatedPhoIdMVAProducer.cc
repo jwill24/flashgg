@@ -76,7 +76,7 @@ namespace flashgg {
         evt.getByToken( rhoToken_, rhoHandle );
         const double rhoFixedGrd = *( rhoHandle.product() );
 
-        auto_ptr<std::vector<flashgg::DiPhotonCandidate> > out_obj( new std::vector<flashgg::DiPhotonCandidate>() );
+        unique_ptr<std::vector<flashgg::DiPhotonCandidate> > out_obj( new std::vector<flashgg::DiPhotonCandidate>() );
 
         for (const auto & obj : *objects) {
             flashgg::DiPhotonCandidate *new_obj = obj.clone();
@@ -151,7 +151,7 @@ namespace flashgg {
             out_obj->push_back(*new_obj);
             delete new_obj;
         }
-        evt.put(out_obj);
+        evt.put( move( out_obj ) );
     }
 }
 
