@@ -120,7 +120,8 @@ git cms-merge-topic -u forthommel:for-flashgg-METRecipe-8_1_0
 #git remote remove metCMS
 
 echo "Setting up MET filters..."
-git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate # OK for 8_1_X
+#git cms-merge-topic -u cms-met:CMSSW_8_0_X-METFilterUpdate # OK for 8_1_X, beside the auto_ptr...
+git cms-merge-topic -u forthommel:for-flashgg-METFilterUpdate-8_1_0
 
 echo "Setting up TnP tools..."
 git cms-merge-topic -u forthommel:for-flashgg-egm_tnp-8_1_0
