@@ -78,6 +78,12 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.varType.int,
                               'runSummer16EGMPhoID'
                               )
+        self.options.register('forwardCTPPSTracks',
+                              0,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.int,
+                              'forwardCTPPSTracks'
+                              )
 
         self.parsed_ = False
 
@@ -175,6 +181,8 @@ class MicroAODCustomize(object):
             self.customizeSpring15EleID(process)
         if self.runSummer16EGMPhoID:
             self.customizeSummer16EGMPhoID(process)
+        if self.forwardCTPPSTracks:
+            self.customizeCTPPSTracks(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -456,6 +464,8 @@ class MicroAODCustomize(object):
     def customize80X(self,process):
         pass
 #        delattr(process,"QGPoolDBESSource")
+    def customizeCTPPSTracks(self,process):
+        process.out.outputCommands.append("keep *_totemRP*_*_*")
 
 # customization object
 customize = MicroAODCustomize()
