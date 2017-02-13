@@ -84,6 +84,12 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.varType.int,
                               'forwardCTPPSTracks'
                               )
+        self.options.register('keepLowLevelObjects',
+                              0,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.int,
+                              'keepLowLevelObjects'
+                              )
 
         self.parsed_ = False
 
@@ -183,6 +189,8 @@ class MicroAODCustomize(object):
             self.customizeSummer16EGMPhoID(process)
         if self.forwardCTPPSTracks:
             self.customizeCTPPSTracks(process)
+        if self.keepLowLevelObjects:
+            self.customizeLowLevelObjects(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -466,6 +474,10 @@ class MicroAODCustomize(object):
 #        delattr(process,"QGPoolDBESSource")
     def customizeCTPPSTracks(self,process):
         process.out.outputCommands.append("keep *_totemRP*_*_*")
+    def customizeLowLevelObjects(self,process):
+        process.out.outputCommands.append("keep *_flashggJets*_*_*")
+        process.out.outputCommands.append("keep *_flashggMuons_*_*")
+        process.out.outputCommands.append("keep *_flashggElectrons_*_*")
 
 # customization object
 customize = MicroAODCustomize()
