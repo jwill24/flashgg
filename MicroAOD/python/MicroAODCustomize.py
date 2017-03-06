@@ -475,6 +475,9 @@ class MicroAODCustomize(object):
     def customizeCTPPSTracks(self,process):
         process.out.outputCommands.append("keep *_totemRP*_*_*")
     def customizeLowLevelObjects(self,process):
+        #process.out.outputCommands.append("keep *_slimmedJets_*_*")
+        process.out.outputCommands.append("keep *_slimmedMETs_*_*")
+        process.out.outputCommands.append("keep *_packedPFCandidates_*_*")
         process.out.outputCommands.append("keep *_flashggJets*_*_*")
         process.out.outputCommands.append("keep *_flashggMuons_*_*")
         process.out.outputCommands.append("keep *_flashggElectrons_*_*")
