@@ -90,6 +90,12 @@ class MicroAODCustomize(object):
                               VarParsing.VarParsing.varType.int,
                               'keepLowLevelObjects'
                               )
+        self.options.register('keepRecoVertices',
+                              0,
+                              VarParsing.VarParsing.multiplicity.singleton,
+                              VarParsing.VarParsing.varType.int,
+                              'keepRecoVertices'
+                              )
 
         self.parsed_ = False
 
@@ -150,6 +156,8 @@ class MicroAODCustomize(object):
             self.customizeBackground(process)
             if "thq" in customize.datasetName.lower() or "thw" in customize.datasetName.lower():
                 self.customizeTH(process)
+            elif "gammagammatogammagamma" in customize.datasetName.lower():
+                self.customizeExclusiveGG(process)
         if self.debug == 1:
             self.customizeDebug(process)
         if self.hlt == 1:
@@ -191,6 +199,8 @@ class MicroAODCustomize(object):
             self.customizeCTPPSTracks(process)
         if self.keepLowLevelObjects:
             self.customizeLowLevelObjects(process)
+        if self.keepRecoVertices:
+            self.customizeRecoVertices(process)
             
     # signal specific customization
     def customizeSignal(self,process):
@@ -481,6 +491,18 @@ class MicroAODCustomize(object):
         process.out.outputCommands.append("keep *_flashggJets*_*_*")
         process.out.outputCommands.append("keep *_flashggMuons_*_*")
         process.out.outputCommands.append("keep *_flashggElectrons_*_*")
+    def customizeRecoVertices(self,process):
+        process.load("flashgg/MicroAOD/flashggRecoVertices_cfi")
+        process.p *= process.flashggRecoVertices
+        process.out.outputCommands.append("keep *_flashggRecoVertices_*_*")
+    def customizeExclusiveGG(self,process):
+        print 'Customised for a privately-produced exclusive sample'
+        #weights = getattr(process.flashggMicroAODSequence,'weightsCount')
+        #delattr(process.weightsCount,'generator')
+        #delattr(process,'weightsCount')
+        for pathName in process.paths:
+            path = getattr(process,pathName)
+            path.remove(process.weightsCount)
 
 # customization object
 customize = MicroAODCustomize()
